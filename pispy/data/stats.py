@@ -28,7 +28,11 @@ class Packages:
         Args:
             data (dict[ str, dict[ str, int ] ]): The data from the API.
         """
-        self._packages = [ Package( k, v[ "size" ] ) for k,v in data.items() ]
+        self._packages = sorted(
+            [ Package( k, v[ "size" ] ) for k,v in data.items() ],
+            key=lambda package: package.size,
+            reverse=True
+        )
 
     def __iter__( self ) -> Iterator[ Package ]:
         """Get an iterator of all the packages.
