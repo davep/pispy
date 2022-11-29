@@ -5,6 +5,7 @@
 from textual.app     import ComposeResult
 from textual.screen  import Screen
 from textual.widgets import Header, Footer
+from textual.binding import Binding
 
 ##############################################################################
 # Local imports.
@@ -13,6 +14,11 @@ from ..widgets import TopBySize
 ##############################################################################
 class Stats( Screen ):
     """The stats screen for the application."""
+
+    BINDINGS = [
+        Binding( "f2", "switch_screen( 'lookup' )", "Package Lookup" )
+    ]
+    """list[ Binding ]: The bindings for the stats screen."""
 
     def compose( self ) -> ComposeResult:
         """Compose the stats screen.

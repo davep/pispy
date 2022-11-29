@@ -7,7 +7,7 @@ from textual.binding import Binding
 
 ##############################################################################
 # Local imports.
-from .screens import Stats
+from .screens import Stats, Lookup
 
 ##############################################################################
 class PISpy( App[ None ] ):
@@ -20,7 +20,8 @@ class PISpy( App[ None ] ):
     """str: The subtitle of the application."""
 
     SCREENS = {
-        "stats": Stats
+        "stats": Stats,
+        "lookup": Lookup
     }
     """dict[ str, Screen ]: The screen collection for the application."""
 

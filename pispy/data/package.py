@@ -88,23 +88,24 @@ class Package( NamedTuple ):
     """str: The reason for the yank, if the package has been yanked."""
 
     @classmethod
-    async def from_pypi( cls, package: str ) -> "Package":
+    async def from_pypi( cls, package: str ) -> tuple[ bool, "Package" ]:
         """Get information on the given package from PyPi.
 
         Args:
             package (str): The name of the package to get data for.
 
         Returns:
-            Package: The data for the package.
+            tuple[ bool, Package ]: A flag to say if the package was found
+                and package data.
         """
 
         async with httpx.AsyncClient() as client:
 
-            data = ( await client.get(
-                f"https://pypi.org/pypi/{package}/json",
-                follow_redirects=True
-            ) ).json()
+            resp = await client.get(
+                f"https://pypi.org/pypi/{package}/json", follow_redirects=True
+            )
 
+            data = resp.json()
             def _info( value: str, default: Any ) -> Any:
                 """Get some info, default if it isn't there or is `None`."""
                 return default if (
@@ -112,7 +113,7 @@ class Package( NamedTuple ):
                 ) is None else result
 
             # TODO: Do this in a less-monolothic way.
-            return cls(
+            return resp.status_code == httpx.codes.OK, cls(
                 author                   = _info( "author", "" ),
                 author_email             = _info( "author_email", "" ),
                 bugtrack_url             = _info( "bugtrack_url", "" ),
