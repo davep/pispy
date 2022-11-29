@@ -7,7 +7,7 @@ from textual.binding import Binding
 
 ##############################################################################
 # Local imports.
-from .screens import Main
+from .screens import Stats
 
 ##############################################################################
 class PISpy( App[ None ] ):
@@ -20,7 +20,7 @@ class PISpy( App[ None ] ):
     """str: The subtitle of the application."""
 
     SCREENS = {
-        "main": Main
+        "stats": Stats
     }
     """dict[ str, Screen ]: The screen collection for the application."""
 
@@ -31,7 +31,7 @@ class PISpy( App[ None ] ):
 
     def on_mount( self ):
         """Configure the application on startup."""
-        self.push_screen( "main" )
+        self.push_screen( "stats" )
 
 ##############################################################################
 def run() -> None:

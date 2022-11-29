@@ -1,13 +1,13 @@
-"""The screens that make up the application."""
+"""Widgets used in the application."""
 
 ##############################################################################
 # Local imports.
-from .stats import Stats
+from .top_by_size import TopBySize
 
 ##############################################################################
-# Export the screens.
+# Export widgets.
 __all__ = [
-    "Stats"
+    "TopBySize"
 ]
 
 ### __init__.py ends here
