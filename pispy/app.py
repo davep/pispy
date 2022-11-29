@@ -32,7 +32,7 @@ class PISpy( App[ None ] ):
 
     def on_mount( self ):
         """Configure the application on startup."""
-        self.push_screen( "stats" )
+        self.push_screen( "lookup" )
 
 ##############################################################################
 def run() -> None:
