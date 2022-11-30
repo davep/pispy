@@ -9,7 +9,7 @@ from typing import Any
 from textual.app        import ComposeResult
 from textual.screen     import Screen
 from textual.widgets    import Header, Footer, Input, Button, Label
-from textual.containers import Horizontal, Vertical
+from textual.containers import Horizontal
 from textual.binding    import Binding
 
 ##############################################################################
@@ -19,79 +19,8 @@ from rich.console  import RenderableType
 
 ##############################################################################
 # Local imports.
-from ..data import Package
-
-##############################################################################
-class Title( Label ):
-    """A title for an item of package information."""
-
-    DEFAULT_CSS = """
-    Title {
-        background: $panel-lighten-3;
-        text-style: bold;
-    }
-    """
-    """str: The defaults styles."""
-
-    def __init__( self, text: str ) -> None:
-        """Initialise the title.
-
-        Args:
-            text (str): The title.
-        """
-        super().__init__( f"{text}:" )
-
-##############################################################################
-class Value( Label ):
-    """A value for an item of package information."""
-
-    DEFAULT_CSS = """
-    Value {
-        background: $panel;
-        padding-bottom: 1;
-    }
-    """
-    """str: The default styles."""
-
-    def __init__( self, value: RenderableType, *args: Any, **kwargs: Any ) -> None:
-        """Initialise the value.
-
-        Args:
-            value (RenderableType): The value.
-        """
-        super().__init__(
-            value or "None",
-            *args,
-            classes=( "none" if not value else "" ),
-            **kwargs
-        )
-
-##############################################################################
-class URL( Value ):
-    """A URL for an item of package information."""
-
-    def __init__( self, url: str ) -> None:
-        """Initialise the URL.
-
-        Args:
-            value (RenderableType): The value.
-        """
-        super().__init__( Markdown( f"<{url}>" ) if url else "None" )
-
-##############################################################################
-class PackageInfo( Vertical, can_focus=True ):
-    """Widget for displaying package information."""
-
-    DEFAULT_CSS = """
-    PackageInfo {
-        border: tall $primary;
-        height: 1fr;
-    }
-
-    PackageInfo:focus {
-        border: tall $accent;
-    }
-    """
+from ..data    import Package
+from ..widgets import PackageInfo
 
 ##############################################################################
 class Lookup( Screen ):
@@ -109,15 +38,6 @@ class Lookup( Screen ):
     Lookup #input {
         height: 5;
         border: blank;
-    }
-
-    Label.error {
-        color: red;
-        text-style: bold;
-    }
-
-    Value.none {
-        color: $text-muted;
     }
     """
     """The CSS for the screen."""
@@ -146,60 +66,12 @@ class Lookup( Screen ):
         """Configure the screen once loaded up."""
         self.query_one( Input ).focus()
 
-    async def lookup( self ) -> None:
-        """Perform a lookup for a package."""
-
-        if not self.query_one( Input ).value.strip():
-            return
-
-        # Clean out the output. We're going to build it up again.
-        self.query( "#output > *" ).remove()
-
-        # Download the data for the package.
-        found, package = await Package.from_pypi( self.query_one( Input ).value )
-
-        # If we found it...
-        if found:
-            # ...populate the output.
-            self.query_one( PackageInfo ).mount(
-                Title( "Name"), Value( package.name ),
-                Title( "Version"), Value( package.version ),
-                Title( "Summary"), Value( package.summary ),
-                Title( "URL" ), URL( package.package_url ),
-                Title( "Author" ), Value( package.author ),
-                Title( "Email" ), Value( package.author_email ),
-                Title( "Bug Track URL" ), URL( package.bugtrack_url ),
-                Title( "Classifiers" ), Value( "\n".join( package.classifiers ) ),
-                Title( "Description" ), Value(
-                    Markdown( package.description )
-                    if package.description_content_type == "text/markdown"
-                    else  package.description
-                ),
-                Title( "Documentation URL" ), URL( package.docs_url ),
-                Title( "Download URL" ), URL( package.download_url ),
-                Title( "Homepage" ), URL( package.homepage ),
-                Title( "Keywords" ), Value( ", ".join( package.keywords ) ),
-                Title( "License" ), Value( package.license ),
-                Title( "Maintainer" ), Value( package.maintainer ),
-                Title( "Email" ), Value( package.maintainer_email ),
-                Title( "Platform" ), Value( package.platform ),
-                Title( "Project URL" ), URL( package.project_url ),
-                # TODO: Project URLs -- find a good example
-                Title( "Release URL" ), URL( package.release_url ),
-                Title( "Requires" ), Value( ", ".join( package.requires_dist ) ),
-                # TODO: yanked
-                # TODO: yanked_reason
-            )
-        else:
-            # Report that we didn't find it.
-            self.query_one( PackageInfo ).mount( Label( "Not found", classes="error" ) )
-
     async def on_input_submitted( self, _: Input.Submitted ) -> None:
         """React to the user hitting enter in the input field."""
-        await self.lookup()
+        await self.query_one( PackageInfo ).show( self.query_one( Input ).value )
 
     async def on_button_pressed( self, _: Button.Pressed ) -> None:
         """React to the user pressing the lookup button."""
-        await self.lookup()
+        await self.query_one( PackageInfo ).show( self.query_one( Input ).value )
 
 ### lookup.py ends here
