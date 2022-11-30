@@ -79,6 +79,21 @@ class URL( Value ):
         super().__init__( Markdown( f"<{url}>" ) if url else "None" )
 
 ##############################################################################
+class PackageInfo( Vertical, can_focus=True ):
+    """Widget for displaying package information."""
+
+    DEFAULT_CSS = """
+    PackageInfo {
+        border: tall $primary;
+        height: 1fr;
+    }
+
+    PackageInfo:focus {
+        border: tall $accent;
+    }
+    """
+
+##############################################################################
 class Lookup( Screen ):
     """The package lookup screen."""
 
@@ -92,12 +107,8 @@ class Lookup( Screen ):
     }
 
     Lookup #input {
-        height: 3;
-    }
-
-    Lookup #output {
-        border: solid $primary;
-        height: 1fr;
+        height: 5;
+        border: blank;
     }
 
     Label.error {
@@ -128,9 +139,7 @@ class Lookup( Screen ):
             Button( "Lookup" ),
             id="input"
         )
-        yield Vertical(
-            id="output"
-        )
+        yield PackageInfo()
         yield Footer()
 
     def on_mount( self ) -> None:
@@ -152,7 +161,7 @@ class Lookup( Screen ):
         # If we found it...
         if found:
             # ...populate the output.
-            self.query_one( "#output" ).mount(
+            self.query_one( PackageInfo ).mount(
                 Title( "Name"), Value( package.name ),
                 Title( "Version"), Value( package.version ),
                 Title( "Summary"), Value( package.summary ),
@@ -183,7 +192,7 @@ class Lookup( Screen ):
             )
         else:
             # Report that we didn't find it.
-            self.query_one( "#output" ).mount( Label( "Not found", classes="error" ) )
+            self.query_one( PackageInfo ).mount( Label( "Not found", classes="error" ) )
 
     async def on_input_submitted( self, _: Input.Submitted ) -> None:
         """React to the user hitting enter in the input field."""
