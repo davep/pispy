@@ -30,7 +30,7 @@ class PISpy( App[ None ] ):
     ]
     """list[ Binding ]: The main application bindings."""
 
-    def on_mount( self ):
+    def on_mount( self ) -> None:
         """Configure the application on startup."""
         self.push_screen( "lookup" )
 
