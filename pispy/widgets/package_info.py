@@ -2,7 +2,7 @@
 
 ##############################################################################
 # Python imports.
-from typing        import Any
+from typing        import Any, Iterator
 from pkg_resources import parse_requirements
 
 ##############################################################################
@@ -104,6 +104,20 @@ class PackageInfo( Vertical, can_focus=True ):
         """Clear the content of the widget."""
         self.query( "PackageInfo > * ").remove()
 
+    @staticmethod
+    def project_urls( urls: dict[ str, str ] ) -> Iterator[ Title | URL ]:
+        """Generate title/URL widgets from the project's URLs.
+
+        Args:
+            urls (dict[ str, str]): The project URLs.
+
+        Yields:
+            Title | URL: A title or a URL.
+        """
+        for title, url in urls.items():
+            yield Title( title )
+            yield URL( url )
+
     async def show( self, package_name: str ) -> None:
         """Show the package information for the given package.
 
@@ -147,7 +161,7 @@ class PackageInfo( Vertical, can_focus=True ):
                 Title( "Email" ), Value( package.maintainer_email ),
                 Title( "Platform" ), Value( package.platform ),
                 Title( "Project URL" ), URL( package.project_url ),
-                # TODO: Project URLs -- find a good example
+                *self.project_urls( package.project_urls ),
                 Title( "Release URL" ), URL( package.release_url ),
                 Title( "Requires" ),Value(
                     ", ".join(
