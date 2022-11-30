@@ -7,6 +7,7 @@ from textual.binding import Binding
 
 ##############################################################################
 # Local imports.
+from .        import __version__
 from .screens import Stats, Lookup
 
 ##############################################################################
@@ -16,7 +17,7 @@ class PISpy( App[ None ] ):
     TITLE = "PISpy"
     """str: The title of the application."""
 
-    SUB_TITLE = "The Terminal PyPi Viewer"
+    SUB_TITLE = f"The Terminal PyPi Viewer - v{__version__}"
     """str: The subtitle of the application."""
 
     SCREENS = {
