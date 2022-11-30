@@ -150,7 +150,7 @@ class PackageInfo( Vertical, can_focus=True ):
                 Title( "Description" ), Value(
                     Markdown( package.description )
                     if package.description_content_type == "text/markdown"
-                    else  package.description
+                    else package.description
                 ),
                 Title( "Documentation URL" ), URL( package.docs_url ),
                 Title( "Download URL" ), URL( package.download_url ),
