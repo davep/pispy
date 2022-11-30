@@ -34,7 +34,7 @@ def long_desc():
 # Perform the setup.
 setup(
 
-    name                          = "pispy",
+    name                          = "pispy-client",
     version                       = pispy.__version__,
     description                   = str( pispy.__doc__ ),
     long_description              = long_desc(),
