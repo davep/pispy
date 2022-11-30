@@ -12,6 +12,8 @@ mypy = "*"
 twine = "*"
 vermin = "*"
 pylint = "*"
+types-pygments = "*"
+types-setuptools = "*"
 
 [requires]
 python_version = "3.11"
