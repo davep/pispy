@@ -100,9 +100,9 @@ class PackageInfo( Vertical, can_focus=True ):
     }
     """
 
-    def clear( self ) -> None:
+    async def clear( self ) -> None:
         """Clear the content of the widget."""
-        self.query( "PackageInfo > * ").remove()
+        await self.query( "PackageInfo > * ").remove()
 
     @staticmethod
     def project_urls( urls: dict[ str, str ] ) -> Iterator[ Title | URL ]:
@@ -126,7 +126,7 @@ class PackageInfo( Vertical, can_focus=True ):
         """
 
         # Clear any previous content.
-        self.clear()
+        await self.clear()
 
         # Don't bother trying to do anything if there isn't actually a name.
         if not package_name.strip():
@@ -138,7 +138,7 @@ class PackageInfo( Vertical, can_focus=True ):
         # If we found it...
         if found:
             # ...populate the output.
-            self.query_one( PackageInfo ).mount(
+            await self.query_one( PackageInfo ).mount(
                 Title( "Name"), Value( package.name ),
                 Title( "Version"), Value( package.version ),
                 Title( "Summary"), Value( package.summary ),
@@ -174,6 +174,6 @@ class PackageInfo( Vertical, can_focus=True ):
             )
         else:
             # Report that we didn't find it.
-            self.query_one( PackageInfo ).mount( Label( "Not found", classes="error" ) )
+            await self.query_one( PackageInfo ).mount( Label( "Not found", classes="error" ) )
 
 ### package_info.py ends here
