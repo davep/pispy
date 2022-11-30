@@ -54,11 +54,8 @@ class Lookup( Screen ):
             ComposeResult: The stats screen's layout.
         """
         yield Header()
-        yield Horizontal(
-            Input( placeholder="Name of the package to look up in PyPi" ),
-            Button( "Lookup" ),
-            id="input"
-        )
+        self.input = Input( placeholder="Name of the package to look up in PyPi" )
+        yield Horizontal( self.input, Button( "Lookup" ), id="input" )
         yield PackageInfo()
         yield Footer()
 
@@ -69,6 +66,16 @@ class Lookup( Screen ):
     async def on_input_submitted( self, _: Input.Submitted ) -> None:
         """React to the user hitting enter in the input field."""
         await self.query_one( PackageInfo ).show( self.query_one( Input ).value )
+
+    async def action_lookup( self, package: str ) -> None:
+        """React to a hyperlink of a project being clicked on.
+
+        Args:
+            package (str): The name of the package to look up.
+        """
+        self.input.value           = package
+        self.input.cursor_position = len( package )
+        await self.query_one( PackageInfo ).show( package )
 
     async def on_button_pressed( self, _: Button.Pressed ) -> None:
         """React to the user pressing the lookup button."""

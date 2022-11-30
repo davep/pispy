@@ -2,7 +2,8 @@
 
 ##############################################################################
 # Python imports.
-from typing import Any
+from typing        import Any
+from pkg_resources import parse_requirements
 
 ##############################################################################
 # Textual imports.
@@ -148,7 +149,12 @@ class PackageInfo( Vertical, can_focus=True ):
                 Title( "Project URL" ), URL( package.project_url ),
                 # TODO: Project URLs -- find a good example
                 Title( "Release URL" ), URL( package.release_url ),
-                Title( "Requires" ), Value( ", ".join( package.requires_dist ) ),
+                Title( "Requires" ),Value(
+                    ", ".join(
+                        f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
+                        for pkg in parse_requirements( package.requires_dist )
+                    )
+                ),
                 # TODO: yanked
                 # TODO: yanked_reason
             )
