@@ -132,7 +132,7 @@ class Package( NamedTuple ):
                 platform                 = _info( "platform", "" ),
                 project_url              = _info( "project_url", "" ),
                 project_urls             = _info( "project_urls", {} ),
-                release_url              = _info( "release_url", {} ),
+                release_url              = _info( "release_url", "" ),
                 requires_dist            = _info( "requires_dist", [] ),
                 requires_python          = _info( "requires_python", "" ),
                 summary                  = _info( "summary", "" ),
