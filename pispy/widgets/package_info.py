@@ -125,12 +125,12 @@ class PackageInfo( Vertical, can_focus=True ):
             package_name (str): The name of the package to lookup and show
         """
 
-        # Clear any previous content.
-        await self.clear()
-
         # Don't bother trying to do anything if there isn't actually a name.
         if not package_name.strip():
             return
+
+        # Clear any previous content.
+        await self.clear()
 
         # Download the data for the package.
         found, package = await Package.from_pypi( package_name )
