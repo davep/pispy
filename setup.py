@@ -48,7 +48,7 @@ setup(
     package_data                  = { "pispy": [ "py.typed" ] },
     include_package_data          = True,
     install_requires              = [ "textual", "httpx" ],
-    python_requires               = ">=3.9",
+    python_requires               = ">=3.10",
     keywords                      = "terminal python pypi client lookup",
     entry_points                  = {
         "console_scripts": "pispy=pispy.app:run"
@@ -62,7 +62,6 @@ setup(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Topic :: Utilities",
