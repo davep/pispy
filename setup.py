@@ -17,7 +17,7 @@ def readme():
     :returns: The path to the README file.
     :rtype: ~pathlib.Path
     """
-    return Path( __file__).parent.resolve() / "README.md"
+    return Path( __file__ ).parent.resolve() / "README.md"
 
 ##############################################################################
 # Load the long description for the package.
