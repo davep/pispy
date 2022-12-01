@@ -2,11 +2,102 @@
 
 ##############################################################################
 # Python imports.
-from typing import NamedTuple, Any
+from typing    import NamedTuple, Any
+from functools import partial
 
 ##############################################################################
 # httpx imports.
 import httpx
+
+##############################################################################
+def _get( payload: dict[ str, dict[ str, Any ] ], via: str, value: str, default: Any="" ) -> Any:
+    """Get some data, default if it isn't there or is `None`.
+
+    Args:
+        payload (dict[ str, dict[ str, Any ] ]): The payload from the API.
+        via (str): The child collection to get the value via.
+        value (str): The value to get.
+        default (Any, optional): The default to use.
+
+    Returns:
+        Any: The value found, or the default.
+
+    Note:
+        The default is used if `value` can't be found, or if it is `None`.
+    """
+    return default if (
+        result := payload.get( via, {} ).get( value )
+    ) is None else result
+
+##############################################################################
+class URL( NamedTuple ):
+    """A package's release URL data."""
+
+    comment_text: str
+    """str: The comment text for the URL."""
+
+    digests: dict[ str, str]
+    """dict[ str, str ]: The digests for the URL."""
+
+    downloads: int
+    """int: The number of downloads for the URL."""
+
+    filename: str
+    """str: The filename for the URL."""
+
+    has_sig: bool
+    """bool: Does the URL have a signature?"""
+
+    md5_digest: str
+    """str: The MD5 digest for the URL."""
+
+    packagetype: str
+    """str: The type of package."""
+
+    python_version: str
+    """str: The version of package for this URL."""
+
+    size: int
+    """int: The size of the download at this URL."""
+
+    upload_time_iso_8601: str
+    """str: The upload time of the URL in ISo 8601 format."""
+
+    url: str
+    """str: The URL itself."""
+
+    yanked: bool
+    """bool: Has this URL been yanked?"""
+
+    yanked_reason: str
+    """str: The reason for the yank, if the URL has been yanked."""
+
+    @classmethod
+    def from_json( cls, data: dict[ str, Any ] ) -> "URL":
+        """Get package URL information from the given data.
+
+        Args:
+            data (dict[ str, Any ]): The URL data.
+
+        Returns:
+            URL: An instance of a URL class.
+        """
+        url = partial( _get, { "url": data }, "url" )
+        return cls(
+            comment_text         = url( "comment_text" ),
+            digests              = url( "digests", {} ),
+            downloads            = url( "downloads", 0 ),
+            filename             = url( "filename" ),
+            has_sig              = url( "has_sig", False ),
+            md5_digest           = url( "md5_digest" ),
+            packagetype          = url( "packagetype" ),
+            python_version       = url( "python_version" ),
+            size                 = url( "size", 0 ),
+            upload_time_iso_8601 = url( "upload_time_iso_8601" ),
+            url                  = url( "url" ),
+            yanked               = url( "yanked", False ),
+            yanked_reason        = url( "yanked_reason" )
+        )
 
 ##############################################################################
 class Package( NamedTuple ):
@@ -87,6 +178,9 @@ class Package( NamedTuple ):
     yanked_reason: str
     """str: The reason for the yank, if the package has been yanked."""
 
+    urls: list[ URL ]
+    """list[ URL ]: The URLs for this package."""
+
     @classmethod
     async def from_pypi( cls, package: str ) -> tuple[ bool, "Package" ]:
         """Get information on the given package from PyPi.
@@ -101,44 +195,47 @@ class Package( NamedTuple ):
 
         async with httpx.AsyncClient() as client:
 
+            # Get the package's data from the API.
             resp = await client.get(
                 f"https://pypi.org/pypi/{package}/json", follow_redirects=True
             )
 
+            # Extract the main payload data.
             data = resp.json()
-            def _info( value: str, default: Any ) -> Any:
-                """Get some info, default if it isn't there or is `None`."""
-                return default if (
-                    result := data.get( "info", {} ).get( value )
-                ) is None else result
+
+            # Create the function to get the main package information.
+            info = partial( _get, data, "info" )
 
             # TODO: Do this in a less-monolothic way.
             return resp.status_code == httpx.codes.OK, cls(
-                author                   = _info( "author", "" ),
-                author_email             = _info( "author_email", "" ),
-                bugtrack_url             = _info( "bugtrack_url", "" ),
-                classifiers              = _info( "classifiers", [] ),
-                description              = _info( "description", "" ),
-                description_content_type = _info( "description_content_type", "" ),
-                docs_url                 = _info( "docs_url", "" ),
-                download_url             = _info( "download_url", "" ),
-                homepage                 = _info( "homepage", "" ),
-                keywords                 = _info( "keywords", "" ).split(),
-                license                  = _info( "licence", "" ),
-                maintainer               = _info( "maintainer", "" ),
-                maintainer_email         = _info( "maintainer_email", "" ),
-                name                     = _info( "name", "" ),
-                package_url              = _info( "package_url", "" ),
-                platform                 = _info( "platform", "" ),
-                project_url              = _info( "project_url", "" ),
-                project_urls             = _info( "project_urls", {} ),
-                release_url              = _info( "release_url", "" ),
-                requires_dist            = _info( "requires_dist", [] ),
-                requires_python          = _info( "requires_python", "" ),
-                summary                  = _info( "summary", "" ),
-                version                  = _info( "version", "" ),
-                yanked                   = _info( "yanked", False ),
-                yanked_reason            = _info( "yanked_reason", "" )
+                author                   = info( "author" ),
+                author_email             = info( "author_email" ),
+                bugtrack_url             = info( "bugtrack_url" ),
+                classifiers              = info( "classifiers", [] ),
+                description              = info( "description" ),
+                description_content_type = info( "description_content_type" ),
+                docs_url                 = info( "docs_url" ),
+                download_url             = info( "download_url" ),
+                homepage                 = info( "homepage" ),
+                keywords                 = info( "keywords" ).split(),
+                license                  = info( "licence" ),
+                maintainer               = info( "maintainer" ),
+                maintainer_email         = info( "maintainer_email" ),
+                name                     = info( "name" ),
+                package_url              = info( "package_url" ),
+                platform                 = info( "platform" ),
+                project_url              = info( "project_url" ),
+                project_urls             = info( "project_urls", {} ),
+                release_url              = info( "release_url" ),
+                requires_dist            = info( "requires_dist", [] ),
+                requires_python          = info( "requires_python" ),
+                summary                  = info( "summary" ),
+                version                  = info( "version" ),
+                yanked                   = info( "yanked", False ),
+                yanked_reason            = info( "yanked_reason" ),
+                urls                     = [
+                    URL.from_json( url ) for url in data.get( "urls", [] )
+                ]
             )
 
 ### package.py ends here
