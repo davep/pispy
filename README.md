@@ -18,7 +18,7 @@ $ pipx install pispy-client
 
 Once installed, just run `pispy` from your shell.
 
-![PISpy lookup up Textual](./img/pispy.png)
+![PISpy lookup up Textual](https://raw.githubusercontent.com/davep/pispy/main/img/pispy.png)
 
 ## Naming
 
