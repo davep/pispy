@@ -169,8 +169,8 @@ class PackageInfo( Vertical, can_focus=True ):
                         for pkg in parse_requirements( package.requires_dist )
                     )
                 ),
-                # TODO: yanked
-                # TODO: yanked_reason
+                Title( "Yanked" ), Value( "Yes" if package.yanked else "No" ),
+                Title( "Yanked Reason" ), Value( package.yanked_reason )
             )
         else:
             # Report that we didn't find it.
