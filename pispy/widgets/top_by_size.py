@@ -41,7 +41,7 @@ class TopBySize( Container ):
         """Compose the top 100 package display.
 
         Returns:
-            ComposeResult: The main screen's layout.
+            ComposeResult: The top-by-size screen's layout.
         """
         self.top_100 = DataTable[ str ]( id="top100", zebra_stripes=True )
         yield Label( " Top 100 Packages by Size " )
