@@ -2,13 +2,14 @@
 
 ##############################################################################
 # Local imports.
-from .package import Package
+from .package import Package, PackageURL
 from .stats   import Packages
 
 ##############################################################################
 # Exprots.
 __all__ = [
     "Package",
+    "PackageURL",
     "Packages"
 ]
 
