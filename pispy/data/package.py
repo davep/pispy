@@ -30,7 +30,7 @@ def _get( payload: dict[ str, dict[ str, Any ] ], via: str, value: str, default:
     ) is None else result
 
 ##############################################################################
-class URL( NamedTuple ):
+class PackageURL( NamedTuple ):
     """A package's release URL data."""
 
     comment_text: str
@@ -73,14 +73,14 @@ class URL( NamedTuple ):
     """str: The reason for the yank, if the URL has been yanked."""
 
     @classmethod
-    def from_json( cls, data: dict[ str, Any ] ) -> "URL":
+    def from_json( cls, data: dict[ str, Any ] ) -> "PackageURL":
         """Get package URL information from the given data.
 
         Args:
             data (dict[ str, Any ]): The URL data.
 
         Returns:
-            URL: An instance of a URL class.
+            PackageURL: An instance of a `PackageURL` class.
         """
         url = partial( _get, { "url": data }, "url" )
         return cls(
@@ -178,7 +178,7 @@ class Package( NamedTuple ):
     yanked_reason: str
     """str: The reason for the yank, if the package has been yanked."""
 
-    urls: list[ URL ]
+    urls: list[ PackageURL ]
     """list[ URL ]: The URLs for this package."""
 
     @classmethod
@@ -234,7 +234,7 @@ class Package( NamedTuple ):
                 yanked                   = info( "yanked", False ),
                 yanked_reason            = info( "yanked_reason" ),
                 urls                     = [
-                    URL.from_json( url ) for url in data.get( "urls", [] )
+                    PackageURL.from_json( url ) for url in data.get( "urls", [] )
                 ]
             )
 
