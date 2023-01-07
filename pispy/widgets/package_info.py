@@ -211,7 +211,7 @@ class PackageInfo( Vertical, can_focus=True ):
         # If we found it...
         if found:
             # ...populate the output.
-            await self.query_one( PackageInfo ).mount(
+            await self.mount(
                 Title( "Name"), Value( package.name ),
                 Title( "Version"), Value( package.version ),
                 Title( "Summary"), Value( package.summary ),
