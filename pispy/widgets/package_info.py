@@ -171,7 +171,7 @@ class PackageInfo( Vertical, can_focus=True ):
 
     async def clear( self ) -> None:
         """Clear the content of the widget."""
-        await self.query( "*").remove()
+        await self.query( "*" ).remove()
 
     @staticmethod
     def project_urls( urls: dict[ str, str ] ) -> Iterator[ Title | URL ]:
