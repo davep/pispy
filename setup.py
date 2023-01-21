@@ -47,7 +47,7 @@ setup(
     packages                      = find_packages(),
     package_data                  = { "pispy": [ "py.typed" ] },
     include_package_data          = True,
-    install_requires              = [ "textual", "httpx" ],
+    install_requires              = [ "textual==0.10.1", "httpx" ],
     python_requires               = ">=3.10",
     keywords                      = "terminal python pypi client lookup",
     entry_points                  = {
