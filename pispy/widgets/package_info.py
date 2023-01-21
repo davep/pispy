@@ -28,6 +28,7 @@ class Title( Label ):
     Title {
         background: $panel-lighten-3;
         text-style: bold;
+        width: 1fr;
     }
     """
     """str: The defaults styles."""
@@ -48,6 +49,7 @@ class Value( Label ):
     Value {
         background: $panel;
         padding-bottom: 1;
+        width: 1fr;
     }
 
     Value.none {
@@ -169,7 +171,7 @@ class PackageInfo( Vertical, can_focus=True ):
 
     async def clear( self ) -> None:
         """Clear the content of the widget."""
-        await self.query( "PackageInfo > * ").remove()
+        await self.query( "*").remove()
 
     @staticmethod
     def project_urls( urls: dict[ str, str ] ) -> Iterator[ Title | URL ]:
@@ -211,7 +213,7 @@ class PackageInfo( Vertical, can_focus=True ):
         # If we found it...
         if found:
             # ...populate the output.
-            await self.query_one( PackageInfo ).mount(
+            await self.mount(
                 Title( "Name"), Value( package.name ),
                 Title( "Version"), Value( package.version ),
                 Title( "Summary"), Value( package.summary ),
@@ -248,6 +250,6 @@ class PackageInfo( Vertical, can_focus=True ):
             )
         else:
             # Report that we didn't find it.
-            await self.query_one( PackageInfo ).mount( Label( "Not found", classes="error" ) )
+            await self.mount( Label( "Not found", classes="error" ) )
 
 ### package_info.py ends here
