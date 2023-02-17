@@ -13,8 +13,7 @@ from textual.widgets    import Label, Markdown
 
 ##############################################################################
 # Rich imports.
-from rich.markdown import Markdown as MarkdownValue
-from rich.console  import RenderableType
+from rich.console import RenderableType
 
 ##############################################################################
 # Local imports.
@@ -49,6 +48,7 @@ class Value( Label ):
     Value {
         background: $panel;
         padding-bottom: 1;
+        width: 100%;
     }
 
     Value.none {
@@ -76,6 +76,7 @@ class URL( Markdown ):
 
     DEFAULT_CSS = """
     URL {
+        background: $panel;
         margin: 0;
     }
     """
@@ -84,7 +85,7 @@ class URL( Markdown ):
         """Initialise the URL.
 
         Args:
-            value (RenderableType): The value.
+            url (str): The URL.
         """
         super().__init__( f"<{url}>" if url else "*None*" )
 
