@@ -28,6 +28,7 @@ class Title( Label ):
     Title {
         background: $panel-lighten-3;
         text-style: bold;
+        width: 100%;
     }
     """
     """str: The defaults styles."""
@@ -70,8 +71,14 @@ class Value( Label ):
         )
 
 ##############################################################################
-class URL( Value ):
+class URL( Markdown ):
     """A URL for an item of package information."""
+
+    DEFAULT_CSS = """
+    URL {
+        margin: 0;
+    }
+    """
 
     def __init__( self, url: str ) -> None:
         """Initialise the URL.
@@ -79,7 +86,7 @@ class URL( Value ):
         Args:
             value (RenderableType): The value.
         """
-        super().__init__( MarkdownValue( f"<{url}>" ) if url else "" )
+        super().__init__( f"<{url}>" if url else "*None*" )
 
 ##############################################################################
 class PackageURLData( Vertical ):
