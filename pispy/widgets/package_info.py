@@ -9,11 +9,11 @@ from pkg_resources import parse_requirements
 # Textual imports.
 from textual.app        import ComposeResult
 from textual.containers import Vertical
-from textual.widgets    import Label
+from textual.widgets    import Label, Markdown
 
 ##############################################################################
 # Rich imports.
-from rich.markdown import Markdown
+from rich.markdown import Markdown as MarkdownValue
 from rich.console  import RenderableType
 
 ##############################################################################
@@ -79,7 +79,7 @@ class URL( Value ):
         Args:
             value (RenderableType): The value.
         """
-        super().__init__( Markdown( f"<{url}>" ) if url else "" )
+        super().__init__( MarkdownValue( f"<{url}>" ) if url else "" )
 
 ##############################################################################
 class PackageURLData( Vertical ):
@@ -220,10 +220,10 @@ class PackageInfo( Vertical, can_focus=True ):
                 Title( "Email" ), Value( package.author_email ),
                 Title( "Bug Track URL" ), URL( package.bugtrack_url ),
                 Title( "Classifiers" ), Value( "\n".join( package.classifiers ) ),
-                Title( "Description" ), Value(
+                Title( "Description" ), (
                     Markdown( package.description )
                     if package.description_content_type == "text/markdown"
-                    else package.description
+                    else Value(package.description )
                 ),
                 Title( "Documentation URL" ), URL( package.docs_url ),
                 Title( "Download URL" ), URL( package.download_url ),
