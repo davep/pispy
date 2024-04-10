@@ -47,7 +47,7 @@ class Lookup(Screen[None]):
         """
         yield Header()
         with Horizontal():
-            yield Input(placeholder="Name of the package to look up in PyPi")
+            yield Input(placeholder="Name of the package to look up in PyPI")
             yield Button("Lookup")
         yield PackageInfo()
         yield Footer()
