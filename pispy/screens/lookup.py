@@ -40,9 +40,6 @@ class Lookup(Screen):
     """
     """The CSS for the screen."""
 
-    BINDINGS = [Binding("f2", "app.switch_screen( 'stats' )", "Package Stats")]
-    """list[ Binding ]: The bindings for the stats screen."""
-
     def compose(self) -> ComposeResult:
         """Compose the stats screen.
 
