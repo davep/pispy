@@ -4,10 +4,6 @@
 # Python imports.
 from typing import NamedTuple, Iterator
 
-##############################################################################
-# httpx imports.
-import httpx
-
 
 ##############################################################################
 class Package(NamedTuple):
