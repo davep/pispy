@@ -4,16 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-textual = {extras = ["dev"], version = "*"}
+textual = "*"
 httpx = "*"
 
 [dev-packages]
 mypy = "*"
 twine = "*"
-vermin = "*"
 pylint = "*"
-types-pygments = "*"
-types-setuptools = "*"
+pre-commit = "*"
+black = "*"
 
 [requires]
 python_version = "3.11"
