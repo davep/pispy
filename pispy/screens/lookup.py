@@ -1,25 +1,15 @@
 """The package information lookup screen."""
 
 ##############################################################################
-# Python imports.
-from typing import Any
-
-##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
 from textual.screen import Screen
-from textual.widgets import Header, Footer, Input, Button, Label
+from textual.widgets import Header, Footer, Input, Button
 from textual.containers import Horizontal
 from textual.binding import Binding
 
 ##############################################################################
-# Rich imports.
-from rich.markdown import Markdown
-from rich.console import RenderableType
-
-##############################################################################
 # Local imports.
-from ..data import Package
 from ..widgets import PackageInfo
 
 
