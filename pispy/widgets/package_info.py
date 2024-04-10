@@ -197,6 +197,14 @@ class PackageInfo(VerticalScroll):
 
     @staticmethod
     def package_urls(urls: list[PackageURL]) -> Iterator[Title | PackageURLData]:
+        """Create the display of the given URLs.
+
+        Args:
+           urls: The URLs to display.
+
+        Yields:
+           Title and PackageURLData widgets.
+        """
         for package in urls:
             yield Title(package.filename)
             yield PackageURLData(package)
