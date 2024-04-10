@@ -14,6 +14,7 @@ pylint = "*"
 pre-commit = "*"
 black = "*"
 build = "*"
+types-setuptools = "*"
 
 [requires]
 python_version = "3.11"
