@@ -8,7 +8,7 @@ from pkg_resources import parse_requirements
 ##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Vertical, VerticalScroll
 from textual.widgets import Label, Markdown
 
 ##############################################################################
@@ -158,7 +158,7 @@ class PackageURLData(Vertical):
 
 
 ##############################################################################
-class PackageInfo(Vertical, can_focus=True):
+class PackageInfo(VerticalScroll):
     """Widget for displaying package information."""
 
     DEFAULT_CSS = """
