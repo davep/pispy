@@ -28,17 +28,14 @@ class Lookup(Screen):
         }
     }
 
-    Lookup Input {
-        width: 5fr;
-    }
-
-    Lookup Input {
-        width: 1fr;
-    }
-
-    Lookup #input {
-        height: 5;
-        border: blank;
+    Lookup {
+        &> Horizontal {
+            height: 5;
+            border: blank;
+            Input {
+                width: 1fr;
+            }
+        }
     }
     """
     """The CSS for the screen."""
@@ -53,8 +50,9 @@ class Lookup(Screen):
             ComposeResult: The stats screen's layout.
         """
         yield Header()
-        self.input = Input(placeholder="Name of the package to look up in PyPi")
-        yield Horizontal(self.input, Button("Lookup"), id="input")
+        with Horizontal():
+            yield Input(placeholder="Name of the package to look up in PyPi")
+            yield Button("Lookup")
         yield PackageInfo()
         yield Footer()
 
@@ -72,8 +70,8 @@ class Lookup(Screen):
         Args:
             package (str): The name of the package to look up.
         """
-        self.input.value = package
-        self.input.cursor_position = len(package)
+        self.query_one(Input).value = package
+        self.query_one(Input).cursor_position = len(package)
         await self.query_one(PackageInfo).show(package)
 
     async def on_button_pressed(self, _: Button.Pressed) -> None:
