@@ -13,7 +13,7 @@ from ..widgets import PackageInfo
 
 
 ##############################################################################
-class Lookup(Screen):
+class Lookup(Screen[None]):
     """The package lookup screen."""
 
     CSS = """
