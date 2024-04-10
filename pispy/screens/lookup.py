@@ -43,7 +43,7 @@ class Lookup(Screen[None]):
         """Compose the stats screen.
 
         Returns:
-            ComposeResult: The stats screen's layout.
+            The stats screen's layout.
         """
         yield Header()
         with Horizontal():
@@ -64,7 +64,7 @@ class Lookup(Screen[None]):
         """React to a hyperlink of a project being clicked on.
 
         Args:
-            package (str): The name of the package to look up.
+            package: The name of the package to look up.
         """
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)

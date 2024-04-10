@@ -31,13 +31,13 @@ class Title(Label):
         width: 100%;
     }
     """
-    """str: The defaults styles."""
+    """The defaults styles."""
 
     def __init__(self, text: str) -> None:
         """Initialise the title.
 
         Args:
-            text (str): The title.
+            text: The title.
         """
         super().__init__(f"{text}:")
 
@@ -57,13 +57,13 @@ class Value(Label):
         color: $text-muted;
     }
     """
-    """str: The default styles."""
+    """The default styles."""
 
     def __init__(self, value: RenderableType, *args: Any, **kwargs: Any) -> None:
         """Initialise the value.
 
         Args:
-            value (RenderableType): The value.
+            value: The value.
         """
         super().__init__(
             value or "None", *args, classes=("none" if not value else ""), **kwargs
@@ -85,7 +85,7 @@ class URL(Markdown):
         """Initialise the URL.
 
         Args:
-            url (str): The URL.
+            url: The URL.
         """
         super().__init__(f"<{url}>" if url else "*None*")
 
@@ -107,7 +107,7 @@ class PackageURLData(Vertical):
         """Initialise the package URL widget.
 
         Args:
-            url (PackageURL): The package URL to display the data for.
+            url: The package URL to display the data for.
         """
         super().__init__(*args, **kwargs)
         self._url = url
@@ -117,10 +117,10 @@ class PackageURLData(Vertical):
         """Generate the widgets for displaying digest items.
 
         Args:
-            digest_data (dict[ str, str]): The digest data for the URL.
+            digest_data: The digest data for the URL.
 
         Yields:
-            Title | Value: The widgets for displaying the data.
+            The widgets for displaying the data.
         """
         for name, value in digest_data.items():
             yield Title(name)
@@ -130,7 +130,7 @@ class PackageURLData(Vertical):
         """Compose the package URL display.
 
         Returns:
-            ComposeResult: The package URL data layout.
+            The package URL data layout.
         """
         yield Title("URL")
         yield URL(self._url.url)
@@ -186,10 +186,10 @@ class PackageInfo(VerticalScroll):
         """Generate title/URL widgets from the project's URLs.
 
         Args:
-            urls (dict[ str, str]): The project URLs.
+            urls: The project URLs.
 
         Yields:
-            Title | URL: A title or a URL.
+            A title or a URL.
         """
         for title, url in urls.items():
             yield Title(title)
@@ -213,7 +213,7 @@ class PackageInfo(VerticalScroll):
         """Show the package information for the given package.
 
         Args:
-            package_name (str): The name of the package to lookup and show
+            package_name: The name of the package to lookup and show
         """
 
         # Don't bother trying to do anything if there isn't actually a name.

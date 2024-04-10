@@ -14,10 +14,10 @@ class Package(NamedTuple):
     """Class that holds the details of a specific package."""
 
     name: str
-    """str: The name of the package."""
+    """The name of the package."""
 
     size: int
-    """int: The size of the package."""
+    """The size of the package."""
 
 
 ##############################################################################
@@ -28,7 +28,7 @@ class Packages:
         """Initialise the packages collection from the API data.
 
         Args:
-            data (dict[ str, dict[ str, int ] ]): The data from the API.
+            data: The data from the API.
         """
         self._packages = sorted(
             [Package(k, v["size"]) for k, v in data.items()],
@@ -40,7 +40,7 @@ class Packages:
         """Get an iterator of all the packages.
 
         Yields:
-            Package: A package from PyPi.
+            A package from PyPi.
         """
         return iter(self._packages)
 
@@ -49,7 +49,7 @@ class Packages:
         """Get the top 100 packages by size on PyPi.
 
         Returns:
-            Packages: The package collection.
+            The package collection.
         """
         async with httpx.AsyncClient() as client:
             resp = await client.get(

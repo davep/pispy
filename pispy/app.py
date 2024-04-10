@@ -16,13 +16,13 @@ class PISpy(App[None]):
     """The main application class."""
 
     TITLE = "PISpy"
-    """str: The title of the application."""
+    """The title of the application."""
 
     SUB_TITLE = f"The Terminal PyPi Viewer - v{__version__}"
-    """str: The subtitle of the application."""
+    """The subtitle of the application."""
 
     BINDINGS = [Binding("ctrl+q", "quit", "Quit")]
-    """list[ Binding ]: The main application bindings."""
+    """The main application bindings."""
 
     ENABLE_COMMAND_PALETTE = False
     """Disable the command palette."""
