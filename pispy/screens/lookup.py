@@ -17,7 +17,17 @@ from ..widgets import PackageInfo
 class Lookup(Screen):
     """The package lookup screen."""
 
-    DEFAULT_CSS = """
+    CSS = """
+    Header {
+        HeaderIcon {
+            visibility: hidden;
+        }
+
+        &.-tall {
+            height: 1;
+        }
+    }
+
     Lookup Input {
         width: 5fr;
     }
