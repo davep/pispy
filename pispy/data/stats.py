@@ -44,20 +44,5 @@ class Packages:
         """
         return iter(self._packages)
 
-    @classmethod
-    async def top_100(cls) -> "Packages":
-        """Get the top 100 packages by size on PyPi.
-
-        Returns:
-            The package collection.
-        """
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                "https://pypi.org/stats/",
-                follow_redirects=True,
-                headers={"accept": "application/json"},
-            )
-            return cls(resp.json()["top_packages"])
-
 
 ### stats.py ends here
