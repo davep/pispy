@@ -27,6 +27,9 @@ class PISpy(App[None]):
     BINDINGS = [Binding("ctrl+q", "quit", "Quit")]
     """list[ Binding ]: The main application bindings."""
 
+    ENABLE_COMMAND_PALETTE = False
+    """Disable the command palette."""
+
     def on_mount(self) -> None:
         """Configure the application on startup."""
         self.push_screen("lookup")
