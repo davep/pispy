@@ -98,7 +98,6 @@ class PackageURLData(Vertical):
     DEFAULT_CSS = """
     PackageURLData {
         height: auto;
-        margin: 1 2;
         border: solid $accent;
         background: $panel;
     }
@@ -166,6 +165,7 @@ class PackageInfo(VerticalScroll):
     PackageInfo {
         border: tall $background;
         height: 1fr;
+        padding: 0 1;
 
         &:focus {
             border: tall $accent;
