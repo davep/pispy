@@ -17,13 +17,13 @@ def _get(
     """Get some data, default if it isn't there or is `None`.
 
     Args:
-        payload (dict[ str, dict[ str, Any ] ]): The payload from the API.
-        via (str): The child collection to get the value via.
-        value (str): The value to get.
-        default (Any, optional): The default to use.
+        payload: The payload from the API.
+        via: The child collection to get the value via.
+        value: The value to get.
+        default: The default to use.
 
     Returns:
-        Any: The value found, or the default.
+        The value found, or the default.
 
     Note:
         The default is used if `value` can't be found, or if it is `None`.
