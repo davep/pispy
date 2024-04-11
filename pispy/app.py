@@ -30,11 +30,7 @@ class PISpy(App[None]):
 
     Screen {
         &> Horizontal {
-            height: 5;
-            border: blank;
-            Input {
-                width: 1fr;
-            }
+            height: auto;
         }
     }
     """
