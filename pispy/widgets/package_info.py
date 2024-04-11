@@ -151,7 +151,7 @@ class PackageURLData(Vertical):
         yield Title("Comments")
         yield Value(self._url.comment_text)
         yield from self.digests(self._url.digests)
-        yield Title("Yanked Reason")
+        yield Title("Yanked")
         yield Value("Yes" if self._url.yanked else "No")
         yield Title("Yanked Reason")
         yield Value(self._url.yanked_reason)
