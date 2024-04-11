@@ -4,7 +4,7 @@
 # Textual imports.
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Header, Input, Button
+from textual.widgets import Header, Input
 
 ##############################################################################
 # Local imports.
@@ -59,7 +59,6 @@ class PISpy(App[None]):
         yield Header()
         with Horizontal():
             yield Input(placeholder="Name of the package to look up in PyPI")
-            yield Button("Lookup")
         yield PackageInfo()
 
     def on_mount(self) -> None:
@@ -79,10 +78,6 @@ class PISpy(App[None]):
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)
         await self.query_one(PackageInfo).show(package)
-
-    async def on_button_pressed(self, _: Button.Pressed) -> None:
-        """React to the user pressing the lookup button."""
-        await self.query_one(PackageInfo).show(self.query_one(Input).value)
 
 ##############################################################################
 def run() -> None:
