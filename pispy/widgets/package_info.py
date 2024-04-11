@@ -163,17 +163,17 @@ class PackageInfo(VerticalScroll):
 
     DEFAULT_CSS = """
     PackageInfo {
-        border: tall $primary;
+        border: tall $background;
         height: 1fr;
-    }
 
-    PackageInfo:focus {
-        border: tall $accent;
-    }
+        &:focus {
+            border: tall $accent;
+        }
 
-    PackageInfo Label.error {
-        color: red;
-        text-style: bold;
+        Label.error {
+            color: red;
+            text-style: bold;
+        }
     }
     """
 

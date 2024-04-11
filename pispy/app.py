@@ -27,12 +27,6 @@ class PISpy(App[None]):
             height: 1;
         }
     }
-
-    Screen {
-        &> Horizontal {
-            height: auto;
-        }
-    }
     """
 
     TITLE = "PISpy"
@@ -54,8 +48,7 @@ class PISpy(App[None]):
             The stats screen's layout.
         """
         yield Header()
-        with Horizontal():
-            yield Input(placeholder="Name of the package to look up in PyPI")
+        yield Input(placeholder="Name of the package to look up in PyPI")
         yield PackageInfo()
 
     def on_mount(self) -> None:
