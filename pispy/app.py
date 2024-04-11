@@ -42,7 +42,7 @@ class PISpy(App[None]):
     TITLE = "PISpy"
     """The title of the application."""
 
-    SUB_TITLE = f"The Terminal PyPi Viewer - v{__version__}"
+    SUB_TITLE = f"The Terminal PyPI Viewer - v{__version__}"
     """The subtitle of the application."""
 
     BINDINGS = [Binding("ctrl+q", "quit", "Quit")]
