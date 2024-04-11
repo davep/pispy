@@ -218,7 +218,7 @@ class Package(NamedTuple):
                 description_content_type=info("description_content_type"),
                 docs_url=info("docs_url"),
                 download_url=info("download_url"),
-                homepage=info("homepage"),
+                homepage=info("home_page"),
                 keywords=info("keywords").split(),
                 license=info("licence"),
                 maintainer=info("maintainer"),
