@@ -2,6 +2,7 @@
 
 ##############################################################################
 # Textual imports.
+from textual import on
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Header, Input
@@ -65,7 +66,8 @@ class PISpy(App[None]):
         """Configure the screen once loaded up."""
         self.query_one(Input).focus()
 
-    async def on_input_submitted(self, _: Input.Submitted) -> None:
+    @on(Input.Submitted)
+    async def lookup_package(self) -> None:
         """React to the user hitting enter in the input field."""
         await self.query_one(PackageInfo).show(self.query_one(Input).value)
 
@@ -77,7 +79,7 @@ class PISpy(App[None]):
         """
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)
-        await self.query_one(PackageInfo).show(package)
+        await self.lookup_package()
 
 ##############################################################################
 def run() -> None:
