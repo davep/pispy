@@ -3,7 +3,6 @@
 ##############################################################################
 # Textual imports.
 from textual.app import App, ComposeResult
-from textual.binding import Binding
 from textual.containers import Horizontal
 from textual.widgets import Header, Footer, Input, Button
 
@@ -45,7 +44,7 @@ class PISpy(App[None]):
     SUB_TITLE = f"The Terminal PyPI Viewer - v{__version__}"
     """The subtitle of the application."""
 
-    BINDINGS = [Binding("ctrl+q", "quit", "Quit")]
+    BINDINGS = [("escape", "quit", "Quit")]
     """The main application bindings."""
 
     ENABLE_COMMAND_PALETTE = False
