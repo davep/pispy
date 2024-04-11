@@ -4,11 +4,10 @@
 # Textual imports.
 from textual import on
 from textual.app import App, ComposeResult
-from textual.widgets import Header, Input
+from textual.widgets import Input
 
 ##############################################################################
 # Local imports.
-from . import __version__
 from .widgets import PackageInfo
 
 
@@ -28,12 +27,6 @@ class PISpy(App[None]):
     }
     """
 
-    TITLE = "PISpy"
-    """The title of the application."""
-
-    SUB_TITLE = f"The Terminal PyPI Viewer - v{__version__}"
-    """The subtitle of the application."""
-
     BINDINGS = [("escape", "quit", "Quit")]
     """The main application bindings."""
 
@@ -46,7 +39,6 @@ class PISpy(App[None]):
         Returns:
             The stats screen's layout.
         """
-        yield Header()
         yield Input(placeholder="Name of the package to look up in PyPI")
         yield PackageInfo()
 
