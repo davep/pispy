@@ -3,14 +3,9 @@
 ##############################################################################
 # Local imports.
 from .package import Package, PackageURL
-from .stats   import Packages
 
 ##############################################################################
 # Exprots.
-__all__ = [
-    "Package",
-    "PackageURL",
-    "Packages"
-]
+__all__ = ["Package", "PackageURL"]
 
 ### __init__.py ends here
