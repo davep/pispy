@@ -2,35 +2,64 @@
 
 ##############################################################################
 # Textual imports.
-from textual.app import App
-from textual.binding import Binding
+from textual import on
+from textual.app import App, ComposeResult
+from textual.widgets import Input
 
 ##############################################################################
 # Local imports.
-from . import __version__
-from .screens import Lookup
+from .widgets import PackageInfo
 
 
 ##############################################################################
 class PISpy(App[None]):
     """The main application class."""
 
-    TITLE = "PISpy"
-    """The title of the application."""
+    CSS = """
+    Header {
+        HeaderIcon {
+            visibility: hidden;
+        }
 
-    SUB_TITLE = f"The Terminal PyPi Viewer - v{__version__}"
-    """The subtitle of the application."""
+        &.-tall {
+            height: 1;
+        }
+    }
+    """
 
-    BINDINGS = [Binding("ctrl+q", "quit", "Quit")]
+    BINDINGS = [("escape", "quit", "Quit")]
     """The main application bindings."""
 
     ENABLE_COMMAND_PALETTE = False
     """Disable the command palette."""
 
-    def on_mount(self) -> None:
-        """Configure the application on startup."""
-        self.push_screen(Lookup())
+    def compose(self) -> ComposeResult:
+        """Compose the stats screen.
 
+        Returns:
+            The stats screen's layout.
+        """
+        yield Input(placeholder="Name of the package to look up in PyPI")
+        yield PackageInfo()
+
+    def on_mount(self) -> None:
+        """Configure the screen once loaded up."""
+        self.query_one(Input).focus()
+
+    @on(Input.Submitted)
+    async def lookup_package(self) -> None:
+        """React to the user hitting enter in the input field."""
+        await self.query_one(PackageInfo).show(self.query_one(Input).value)
+
+    async def action_lookup(self, package: str) -> None:
+        """React to a hyperlink of a project being clicked on.
+
+        Args:
+            package: The name of the package to look up.
+        """
+        self.query_one(Input).value = package
+        self.query_one(Input).cursor_position = len(package)
+        await self.lookup_package()
 
 ##############################################################################
 def run() -> None:

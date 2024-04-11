@@ -51,11 +51,12 @@ class Value(Label):
         background: $panel;
         padding-bottom: 1;
         width: 100%;
+
+        &.none {
+            color: $text-muted;
+        }
     }
 
-    Value.none {
-        color: $text-muted;
-    }
     """
     """The default styles."""
 
@@ -97,7 +98,6 @@ class PackageURLData(Vertical):
     DEFAULT_CSS = """
     PackageURLData {
         height: auto;
-        margin: 1 2;
         border: solid $accent;
         background: $panel;
     }
@@ -151,7 +151,7 @@ class PackageURLData(Vertical):
         yield Title("Comments")
         yield Value(self._url.comment_text)
         yield from self.digests(self._url.digests)
-        yield Title("Yanked Reason")
+        yield Title("Yanked")
         yield Value("Yes" if self._url.yanked else "No")
         yield Title("Yanked Reason")
         yield Value(self._url.yanked_reason)
@@ -163,23 +163,20 @@ class PackageInfo(VerticalScroll):
 
     DEFAULT_CSS = """
     PackageInfo {
-        border: tall $primary;
+        border: tall $background;
         height: 1fr;
-    }
+        padding: 0 1;
 
-    PackageInfo:focus {
-        border: tall $accent;
-    }
+        &:focus {
+            border: tall $accent;
+        }
 
-    PackageInfo Label.error {
-        color: red;
-        text-style: bold;
+        Label.error {
+            color: red;
+            text-style: bold;
+        }
     }
     """
-
-    async def clear(self) -> None:
-        """Clear the content of the widget."""
-        await self.query("PackageInfo > * ").remove()
 
     @staticmethod
     def project_urls(urls: dict[str, str]) -> Iterator[Title | URL]:
@@ -221,7 +218,7 @@ class PackageInfo(VerticalScroll):
             return
 
         # Clear any previous content.
-        await self.clear()
+        await self.remove_children()
 
         # Download the data for the package.
         found, package = await Package.from_pypi(package_name)
