@@ -177,10 +177,6 @@ class PackageInfo(VerticalScroll):
     }
     """
 
-    async def clear(self) -> None:
-        """Clear the content of the widget."""
-        await self.query("PackageInfo > * ").remove()
-
     @staticmethod
     def project_urls(urls: dict[str, str]) -> Iterator[Title | URL]:
         """Generate title/URL widgets from the project's URLs.
@@ -221,7 +217,7 @@ class PackageInfo(VerticalScroll):
             return
 
         # Clear any previous content.
-        await self.clear()
+        await self.remove_children()
 
         # Download the data for the package.
         found, package = await Package.from_pypi(package_name)
