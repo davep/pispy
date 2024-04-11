@@ -4,7 +4,6 @@
 # Textual imports.
 from textual import on
 from textual.app import App, ComposeResult
-from textual.containers import Horizontal
 from textual.widgets import Header, Input
 
 ##############################################################################
