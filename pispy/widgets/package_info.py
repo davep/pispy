@@ -9,6 +9,7 @@ from pkg_resources import parse_requirements
 # Textual imports.
 from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
+from textual.widget import Widget
 from textual.widgets import Label, Markdown
 
 ##############################################################################
@@ -206,6 +207,13 @@ class PackageInfo(VerticalScroll):
             yield Title(package.filename)
             yield PackageURLData(package)
 
+    @staticmethod
+    def _perhaps_include(title: str, value: Any, widget: type[Value] | type[URL] | type[Markdown] | type[PackageURLData]):
+        if value is None or (isinstance(value, str) and not value):
+            return
+        yield Title(title)
+        yield widget(value)     # TODO: Clean up typing.
+
     async def show(self, package_name: str) -> None:
         """Show the package information for the given package.
 
@@ -225,64 +233,53 @@ class PackageInfo(VerticalScroll):
 
         # If we found it...
         if found:
-            # ...populate the output.
-            await self.mount(
-                Title("Name"),
-                Value(package.name),
-                Title("Version"),
-                Value(package.version),
-                Title("Summary"),
-                Value(package.summary),
-                Title("URL"),
-                URL(package.package_url),
-                Title("Author"),
-                Value(package.author),
-                Title("Email"),
-                Value(package.author_email),
-                Title("Bug Track URL"),
-                URL(package.bugtrack_url),
-                Title("Classifiers"),
-                Value("\n".join(package.classifiers)),
-                Title("Description"),
-                (
-                    Markdown(package.description)
-                    if package.description_content_type == "text/markdown"
-                    else Value(package.description)
-                ),
-                Title("Documentation URL"),
-                URL(package.docs_url),
-                Title("Download URL"),
-                URL(package.download_url),
-                Title("Homepage"),
-                URL(package.homepage),
-                Title("Keywords"),
-                Value(", ".join(package.keywords)),
-                Title("License"),
-                Value(package.license),
-                Title("Maintainer"),
-                Value(package.maintainer),
-                Title("Email"),
-                Value(package.maintainer_email),
-                Title("Platform"),
-                Value(package.platform),
-                Title("Project URL"),
-                URL(package.project_url),
-                *self.project_urls(package.project_urls),
-                Title("Release URL"),
-                URL(package.release_url),
-                Title("Requires"),
-                Value(
-                    ", ".join(
-                        f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
-                        for pkg in parse_requirements(package.requires_dist)
+            widgets: list[Widget] = []
+            for title, value, display in (
+                    ("Name", package.name, Value),
+                    ("Version", package.version, Value),
+                    ("Summary", package.summary, Value),
+                    ("URL", package.package_url, URL),
+                    ("Author", package.author, Value),
+                    ("Email", package.author_email, Value),
+                    ("Bug Track URL",package.bugtrack_url, URL),
+                    ("Classifiers", "\n".join(package.classifiers), Value),
+                    (
+                        "Description",
+                        package.description,
+                        Markdown
+                        if package.description_content_type == "text/markdown"
+                        else Value
+                    ),
+                    ("Documentation URL", package.docs_url, URL),
+                    ("Download URL", package.download_url, URL),
+                    ("Homepage", package.homepage, URL),
+                    ("Keywords", ", ".join(package.keywords), Value),
+                    ("License", package.license, Value),
+                    ("Maintainer", package.maintainer, Value),
+                    ("Email", package.maintainer_email, Value),
+                    ("Platform", package.platform, Value),
+                    ("Project URL", package.project_url, URL),
+                    *(
+                        (title, value, URL) for title, value in package.project_urls.items()
+                    ),
+                    ("Release URL", package.release_url, URL),
+                    (
+                        "Requires",
+                        ", ".join(
+                            f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
+                            for pkg in parse_requirements(package.requires_dist)
+                        ),
+                        Value
+                    ),
+                    ("Yanked", "Yes" if package.yanked else "No", Value),
+                    ("Yanked Reason", package.yanked_reason, Value),
+                    *(
+                        (package.filename, package, PackageURLData)
+                        for package in package.urls
                     )
-                ),
-                Title("Yanked"),
-                Value("Yes" if package.yanked else "No"),
-                Title("Yanked Reason"),
-                Value(package.yanked_reason),
-                *self.package_urls(package.urls),
-            )
+            ):
+                widgets.extend(list(self._perhaps_include(title, value, display)))
+            await self.mount(*widgets)
         else:
             # Report that we didn't find it.
             await self.mount(Label("Not found", classes="error"))
