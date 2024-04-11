@@ -4,7 +4,7 @@
 # Textual imports.
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Header, Footer, Input, Button
+from textual.widgets import Header, Input, Button
 
 ##############################################################################
 # Local imports.
@@ -61,7 +61,6 @@ class PISpy(App[None]):
             yield Input(placeholder="Name of the package to look up in PyPI")
             yield Button("Lookup")
         yield PackageInfo()
-        yield Footer()
 
     def on_mount(self) -> None:
         """Configure the screen once loaded up."""
