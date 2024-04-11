@@ -288,7 +288,7 @@ class PackageInfo(VerticalScroll):
             )
         else:
             # Report that we didn't find it.
-            await self.query_one(PackageInfo).mount(Label("Not found", classes="error"))
+            await self.mount(Label("Not found", classes="error"))
 
 
 ### package_info.py ends here
