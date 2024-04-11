@@ -220,7 +220,7 @@ class Package(NamedTuple):
                 download_url=info("download_url"),
                 homepage=info("home_page"),
                 keywords=info("keywords").split(),
-                license=info("licence"),
+                license=info("license"),
                 maintainer=info("maintainer"),
                 maintainer_email=info("maintainer_email"),
                 name=info("name"),
