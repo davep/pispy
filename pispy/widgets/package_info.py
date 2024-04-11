@@ -51,11 +51,12 @@ class Value(Label):
         background: $panel;
         padding-bottom: 1;
         width: 100%;
+
+        &.none {
+            color: $text-muted;
+        }
     }
 
-    Value.none {
-        color: $text-muted;
-    }
     """
     """The default styles."""
 
