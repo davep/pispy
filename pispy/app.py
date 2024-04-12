@@ -1,6 +1,10 @@
 """Provides the main application class."""
 
 ##############################################################################
+# Python imports.
+import sys
+
+##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import App, ComposeResult
@@ -42,9 +46,16 @@ class PISpy(App[None]):
         yield Input(placeholder="Name of the package to look up in PyPI")
         yield PackageInfo()
 
-    def on_mount(self) -> None:
-        """Configure the screen once loaded up."""
-        self.query_one(Input).focus()
+    async def on_mount(self) -> None:
+        """Pre-fill the display if a package is passed on the command line."""
+        try:
+            # TODO: doing it via argv is icky, but it's handy for a quick
+            # hack. Once I've revamped the UI I'll switch to argparse, and
+            # probably add an inline switch.
+            self.query_one(Input).value = sys.argv[1]
+        except IndexError:
+            return
+        await self.lookup_package()
 
     @on(Input.Submitted)
     async def lookup_package(self) -> None:
@@ -60,6 +71,7 @@ class PISpy(App[None]):
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)
         await self.lookup_package()
+
 
 ##############################################################################
 def run() -> None:
