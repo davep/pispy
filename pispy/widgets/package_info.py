@@ -177,7 +177,6 @@ class PackageURLData(Vertical):
             ("URL", self._url.url, URL),
             ("Package Type", self._url.packagetype, Value),
             ("Python Version", self._url.python_version, Value),
-            ("Python Version", self._url.python_version, Value),
             ("Size", f"{self._url.size:,}", Value),
             ("MD5 Digest", self._url.md5_digest, Value),
             ("Uploaded", self._url.upload_time_iso_8601, Value),
