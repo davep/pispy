@@ -42,10 +42,6 @@ class PISpy(App[None]):
         yield Input(placeholder="Name of the package to look up in PyPI")
         yield PackageInfo()
 
-    def on_mount(self) -> None:
-        """Configure the screen once loaded up."""
-        self.query_one(Input).focus()
-
     @on(Input.Submitted)
     async def lookup_package(self) -> None:
         """React to the user hitting enter in the input field."""
