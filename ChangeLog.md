@@ -1,8 +1,8 @@
 # PISpy ChangeLog
 
-## Unreleased
+## 0.5.0
 
-**Released: WiP**
+**Released: 2024-04-12**
 
 - Reworked the way the metadata is shown
   ([#2](https://github.com/davep/pispy/issues/2)).
