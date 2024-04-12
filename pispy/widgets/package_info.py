@@ -200,6 +200,10 @@ class PackageInfo(VerticalScroll):
     }
     """
 
+    def on_mount(self) -> None:
+        # Initally prevent focus until there is package info to navigate
+        self.can_focus = False
+
     async def show(self, package_name: str) -> None:
         """Show the package information for the given package.
 
@@ -266,8 +270,10 @@ class PackageInfo(VerticalScroll):
                     ),
                 )
             )
+            self.can_focus = True
         else:
             # Report that we didn't find it.
+            self.can_focus = False
             await self.mount(Label("Not found", classes="error"))
 
 
