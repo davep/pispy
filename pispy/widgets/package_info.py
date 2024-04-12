@@ -2,8 +2,16 @@
 
 ##############################################################################
 # Python imports.
+from functools import singledispatch
 from typing import Any, Iterator
+
+##############################################################################
+# Package resources imports.
 from pkg_resources import parse_requirements
+
+##############################################################################
+# Rich imports.
+from rich.console import RenderableType
 
 ##############################################################################
 # Textual imports.
@@ -11,10 +19,6 @@ from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Label, Markdown
-
-##############################################################################
-# Rich imports.
-from rich.console import RenderableType
 
 ##############################################################################
 # Local imports.
@@ -93,6 +97,39 @@ class URL(Markdown):
 
 
 ##############################################################################
+@singledispatch
+def maybe_show(title: str, value: Any, widget: type[Value]) -> Iterator[Widget]:
+    """Maybe show a value with a given title.
+
+    Args:
+        title: The title for the value to show.
+        value: The value to show.
+        widget: The type of widget to show the value.
+
+    Yields:
+        The widgets required to show the value.
+    """
+    if value is not None or (isinstance(value, str) and not value):
+        return
+    yield Title(title)
+    yield widget(value)
+
+
+##############################################################################
+def widgets_for(values: tuple[tuple[str, Any, type[Widget]], ...]) -> Iterator[Widget]:
+    """Generate the widgets needed to show the given values.
+
+    Args:
+        values: The collection of values to show.
+
+    Yields:
+        The widgets required to show the values.
+    """
+    for title, value, display in values:
+        yield from maybe_show(title, value, display)
+
+
+##############################################################################
 class PackageURLData(Vertical):
     """Widget for displaying data about a package URL."""
 
@@ -159,6 +196,14 @@ class PackageURLData(Vertical):
 
 
 ##############################################################################
+@maybe_show.register
+def _(title: str, value: PackageURL, widget: type[PackageURLData]) -> Iterator[Widget]:
+    """Version of maybe_show specific to package URL data."""
+    yield Title(title)
+    yield widget(value)
+
+
+##############################################################################
 class PackageInfo(VerticalScroll):
     """Widget for displaying package information."""
 
@@ -180,20 +225,6 @@ class PackageInfo(VerticalScroll):
     """
 
     @staticmethod
-    def project_urls(urls: dict[str, str]) -> Iterator[Title | URL]:
-        """Generate title/URL widgets from the project's URLs.
-
-        Args:
-            urls: The project URLs.
-
-        Yields:
-            A title or a URL.
-        """
-        for title, url in urls.items():
-            yield Title(title)
-            yield URL(url)
-
-    @staticmethod
     def package_urls(urls: list[PackageURL]) -> Iterator[Title | PackageURLData]:
         """Create the display of the given URLs.
 
@@ -206,13 +237,6 @@ class PackageInfo(VerticalScroll):
         for package in urls:
             yield Title(package.filename)
             yield PackageURLData(package)
-
-    @staticmethod
-    def _perhaps_include(title: str, value: Any, widget: type[Value] | type[URL] | type[Markdown] | type[PackageURLData]):
-        if value is None or (isinstance(value, str) and not value):
-            return
-        yield Title(title)
-        yield widget(value)     # TODO: Clean up typing.
 
     async def show(self, package_name: str) -> None:
         """Show the package information for the given package.
@@ -233,53 +257,55 @@ class PackageInfo(VerticalScroll):
 
         # If we found it...
         if found:
-            widgets: list[Widget] = []
-            for title, value, display in (
-                    ("Name", package.name, Value),
-                    ("Version", package.version, Value),
-                    ("Summary", package.summary, Value),
-                    ("URL", package.package_url, URL),
-                    ("Author", package.author, Value),
-                    ("Email", package.author_email, Value),
-                    ("Bug Track URL",package.bugtrack_url, URL),
-                    ("Classifiers", "\n".join(package.classifiers), Value),
+            await self.mount(
+                *widgets_for(
                     (
-                        "Description",
-                        package.description,
-                        Markdown
-                        if package.description_content_type == "text/markdown"
-                        else Value
-                    ),
-                    ("Documentation URL", package.docs_url, URL),
-                    ("Download URL", package.download_url, URL),
-                    ("Homepage", package.homepage, URL),
-                    ("Keywords", ", ".join(package.keywords), Value),
-                    ("License", package.license, Value),
-                    ("Maintainer", package.maintainer, Value),
-                    ("Email", package.maintainer_email, Value),
-                    ("Platform", package.platform, Value),
-                    ("Project URL", package.project_url, URL),
-                    *(
-                        (title, value, URL) for title, value in package.project_urls.items()
-                    ),
-                    ("Release URL", package.release_url, URL),
-                    (
-                        "Requires",
-                        ", ".join(
-                            f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
-                            for pkg in parse_requirements(package.requires_dist)
+                        ("Name", package.name, Value),
+                        ("Version", package.version, Value),
+                        ("Summary", package.summary, Value),
+                        ("URL", package.package_url, URL),
+                        ("Author", package.author, Value),
+                        ("Email", package.author_email, Value),
+                        ("Bug Track URL", package.bugtrack_url, URL),
+                        ("Classifiers", "\n".join(package.classifiers), Value),
+                        (
+                            "Description",
+                            package.description,
+                            Markdown
+                            if package.description_content_type == "text/markdown"
+                            else Value,
                         ),
-                        Value
-                    ),
-                    ("Yanked", "Yes" if package.yanked else "No", Value),
-                    ("Yanked Reason", package.yanked_reason, Value),
-                    *(
-                        (package.filename, package, PackageURLData)
-                        for package in package.urls
+                        ("Documentation URL", package.docs_url, URL),
+                        ("Download URL", package.download_url, URL),
+                        ("Homepage", package.homepage, URL),
+                        ("Keywords", ", ".join(package.keywords), Value),
+                        ("License", package.license, Value),
+                        ("Maintainer", package.maintainer, Value),
+                        ("Email", package.maintainer_email, Value),
+                        ("Platform", package.platform, Value),
+                        ("Project URL", package.project_url, URL),
+                        *(
+                            (title, value, URL)
+                            for title, value in package.project_urls.items()
+                        ),
+                        ("Release URL", package.release_url, URL),
+                        (
+                            "Requires",
+                            ", ".join(
+                                f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
+                                for pkg in parse_requirements(package.requires_dist)
+                            ),
+                            Value,
+                        ),
+                        ("Yanked", "Yes" if package.yanked else "No", Value),
+                        ("Yanked Reason", package.yanked_reason, Value),
+                        *(
+                            (package.filename, package, PackageURLData)
+                            for package in package.urls
+                        ),
                     )
-            ):
-                widgets.extend(list(self._perhaps_include(title, value, display)))
-            await self.mount(*widgets)
+                )
+            )
         else:
             # Report that we didn't find it.
             await self.mount(Label("Not found", classes="error"))
