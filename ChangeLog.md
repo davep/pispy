@@ -1,5 +1,11 @@
 # PISpy ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Add support for passing a package name on the command line.
+
 ## 0.5.0
 
 **Released: 2024-04-12**
