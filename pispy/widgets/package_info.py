@@ -4,6 +4,7 @@
 # Python imports.
 from functools import singledispatch
 from typing import Any, Callable, Iterator
+from webbrowser import open as visit_url
 
 ##############################################################################
 # Package resources imports.
@@ -61,13 +62,14 @@ class Value(Label):
 
 
 ##############################################################################
-class URL(Markdown):
+class URL(Label):
     """A URL for an item of package information."""
 
     DEFAULT_CSS = """
     URL {
         background: $panel;
-        margin: 0;
+        padding-bottom: 1;
+        width: 1fr;
     }
     """
 
@@ -77,7 +79,15 @@ class URL(Markdown):
         Args:
             url: The URL.
         """
-        super().__init__(f"<{url}>" if url else "*None*")
+        super().__init__(f"[@click=visit('{url}')]{url}[/]")
+
+    def action_visit(self, url: str) -> None:
+        """Visit the given URL.
+
+        Args:
+           url: The URL to visit.
+        """
+        visit_url(url)
 
 
 ##############################################################################

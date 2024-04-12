@@ -6,6 +6,8 @@
 
 - Reworked the way the metadata is shown
   ([#2](https://github.com/davep/pispy/issues/2)).
+- Clicking on URLs in the display now opens the default web browser
+  ([#7](https://github.com/davep/pispy/issues/7)).
 
 ## 0.4.0
 
