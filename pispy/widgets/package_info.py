@@ -133,9 +133,7 @@ def _(title: str, value: str, widget: Callable[[Any], Widget]) -> Iterator[Widge
 
 
 ##############################################################################
-def widgets_for(
-    values: tuple[tuple[str, Any, Callable[[Any], Widget]], ...]
-) -> Iterator[Widget]:
+def widgets_for(*values: tuple[str, Any, Callable[[Any], Widget]]) -> Iterator[Widget]:
     """Generate the widgets needed to show the given values.
 
     Args:
@@ -256,51 +254,49 @@ class PackageInfo(VerticalScroll):
         if found:
             await self.mount(
                 *widgets_for(
+                    ("Name", package.name, Value),
+                    ("Version", package.version, Value),
+                    ("Summary", package.summary, Value),
+                    ("URL", package.package_url, URL),
+                    ("Author", package.author, Value),
+                    ("Email", package.author_email, Value),
+                    ("Bug Track URL", package.bugtrack_url, URL),
+                    ("Classifiers", "\n".join(package.classifiers), Value),
                     (
-                        ("Name", package.name, Value),
-                        ("Version", package.version, Value),
-                        ("Summary", package.summary, Value),
-                        ("URL", package.package_url, URL),
-                        ("Author", package.author, Value),
-                        ("Email", package.author_email, Value),
-                        ("Bug Track URL", package.bugtrack_url, URL),
-                        ("Classifiers", "\n".join(package.classifiers), Value),
-                        (
-                            "Description",
-                            package.description,
-                            Markdown
-                            if package.description_content_type == "text/markdown"
-                            else Value,
+                        "Description",
+                        package.description,
+                        Markdown
+                        if package.description_content_type == "text/markdown"
+                        else Value,
+                    ),
+                    ("Documentation URL", package.docs_url, URL),
+                    ("Download URL", package.download_url, URL),
+                    ("Homepage", package.homepage, URL),
+                    ("Keywords", ", ".join(package.keywords), Value),
+                    ("License", package.license, Value),
+                    ("Maintainer", package.maintainer, Value),
+                    ("Email", package.maintainer_email, Value),
+                    ("Platform", package.platform, Value),
+                    ("Project URL", package.project_url, URL),
+                    *(
+                        (title, value, URL)
+                        for title, value in package.project_urls.items()
+                    ),
+                    ("Release URL", package.release_url, URL),
+                    (
+                        "Requires",
+                        ", ".join(
+                            f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
+                            for pkg in parse_requirements(package.requires_dist)
                         ),
-                        ("Documentation URL", package.docs_url, URL),
-                        ("Download URL", package.download_url, URL),
-                        ("Homepage", package.homepage, URL),
-                        ("Keywords", ", ".join(package.keywords), Value),
-                        ("License", package.license, Value),
-                        ("Maintainer", package.maintainer, Value),
-                        ("Email", package.maintainer_email, Value),
-                        ("Platform", package.platform, Value),
-                        ("Project URL", package.project_url, URL),
-                        *(
-                            (title, value, URL)
-                            for title, value in package.project_urls.items()
-                        ),
-                        ("Release URL", package.release_url, URL),
-                        (
-                            "Requires",
-                            ", ".join(
-                                f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
-                                for pkg in parse_requirements(package.requires_dist)
-                            ),
-                            Value,
-                        ),
-                        ("Yanked", "Yes" if package.yanked else "No", Value),
-                        ("Yanked Reason", package.yanked_reason, Value),
-                        *(
-                            (package.filename, package, PackageURLData)
-                            for package in package.urls
-                        ),
-                    )
+                        Value,
+                    ),
+                    ("Yanked", "Yes" if package.yanked else "No", Value),
+                    ("Yanked Reason", package.yanked_reason, Value),
+                    *(
+                        (package.filename, package, PackageURLData)
+                        for package in package.urls
+                    ),
                 )
             )
         else:
