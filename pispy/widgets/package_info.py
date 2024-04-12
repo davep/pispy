@@ -3,7 +3,7 @@
 ##############################################################################
 # Python imports.
 from functools import singledispatch
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
 ##############################################################################
 # Package resources imports.
@@ -98,7 +98,9 @@ class URL(Markdown):
 
 ##############################################################################
 @singledispatch
-def maybe_show(title: str, value: Any, widget: type[Value]) -> Iterator[Widget]:
+def maybe_show(
+    title: str, value: Any, widget: Callable[[Any], Widget]
+) -> Iterator[Widget]:
     """Maybe show a value with a given title.
 
     Args:
@@ -109,14 +111,31 @@ def maybe_show(title: str, value: Any, widget: type[Value]) -> Iterator[Widget]:
     Yields:
         The widgets required to show the value.
     """
-    if value is not None or (isinstance(value, str) and not value):
-        return
     yield Title(title)
     yield widget(value)
 
 
 ##############################################################################
-def widgets_for(values: tuple[tuple[str, Any, type[Widget]], ...]) -> Iterator[Widget]:
+@maybe_show.register
+def _(title: str, value: None, widget: Callable[[Any], Widget]) -> Iterator[Widget]:
+    """Show noting when the value is `None`."""
+    del title, value, widget
+    yield from ()
+
+
+##############################################################################
+@maybe_show.register
+def _(title: str, value: str, widget: Callable[[Any], Widget]) -> Iterator[Widget]:
+    """Maybe show a string value."""
+    if value:
+        yield Title(title)
+        yield widget(value)
+
+
+##############################################################################
+def widgets_for(
+    values: tuple[tuple[str, Any, Callable[[Any], Widget]], ...]
+) -> Iterator[Widget]:
     """Generate the widgets needed to show the given values.
 
     Args:
@@ -193,14 +212,6 @@ class PackageURLData(Vertical):
         yield Value("Yes" if self._url.yanked else "No")
         yield Title("Yanked Reason")
         yield Value(self._url.yanked_reason)
-
-
-##############################################################################
-@maybe_show.register
-def _(title: str, value: PackageURL, widget: type[PackageURLData]) -> Iterator[Widget]:
-    """Version of maybe_show specific to package URL data."""
-    yield Title(title)
-    yield widget(value)
 
 
 ##############################################################################
