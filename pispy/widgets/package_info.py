@@ -11,10 +11,6 @@ from webbrowser import open as visit_url
 from pkg_resources import parse_requirements
 
 ##############################################################################
-# Rich imports.
-from rich.console import RenderableType
-
-##############################################################################
 # Textual imports.
 from textual.app import ComposeResult
 from textual.containers import Vertical, VerticalScroll
@@ -34,7 +30,7 @@ class Title(Label):
     Title {
         background: $panel-lighten-3;
         text-style: bold;
-        width: 100%;
+        width: 1fr;
     }
     """
     """The defaults styles."""
@@ -56,7 +52,7 @@ class Value(Label):
     Value {
         background: $panel;
         padding-bottom: 1;
-        width: 100%;
+        width: 1fr;
     }
     """
 
