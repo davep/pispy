@@ -167,49 +167,27 @@ class PackageURLData(Vertical):
         super().__init__(*args, **kwargs)
         self._url = url
 
-    @staticmethod
-    def digests(digest_data: dict[str, str]) -> Iterator[Title | Value]:
-        """Generate the widgets for displaying digest items.
-
-        Args:
-            digest_data: The digest data for the URL.
-
-        Yields:
-            The widgets for displaying the data.
-        """
-        for name, value in digest_data.items():
-            yield Title(name)
-            yield Value(value)
-
     def compose(self) -> ComposeResult:
         """Compose the package URL display.
 
         Returns:
             The package URL data layout.
         """
-        yield Title("URL")
-        yield URL(self._url.url)
-        yield Title("Package Type")
-        yield Value(self._url.packagetype)
-        yield Title("Python Version")
-        yield Value(self._url.python_version)
-        yield Title("Size")
-        yield Value(f"{self._url.size:,}")
-        yield Title("MD5 Digest")
-        yield Value(self._url.md5_digest)
-        yield Title("Uploaded")
-        yield Value(self._url.upload_time_iso_8601)
-        yield Title("Has Signature")
-        yield Value("Yes" if self._url.has_sig else "No")
-        yield Title("Downloads")
-        yield Value(f"{self._url.downloads:,}")
-        yield Title("Comments")
-        yield Value(self._url.comment_text)
-        yield from self.digests(self._url.digests)
-        yield Title("Yanked")
-        yield Value("Yes" if self._url.yanked else "No")
-        yield Title("Yanked Reason")
-        yield Value(self._url.yanked_reason)
+        yield from widgets_for(
+            ("URL", self._url.url, URL),
+            ("Package Type", self._url.packagetype, Value),
+            ("Python Version", self._url.python_version, Value),
+            ("Python Version", self._url.python_version, Value),
+            ("Size", f"{self._url.size:,}", Value),
+            ("MD5 Digest", self._url.md5_digest, Value),
+            ("Uploaded", self._url.upload_time_iso_8601, Value),
+            ("Has Signature", "Yes" if self._url.has_sig else "No", Value),
+            ("Downloads", f"{self._url.downloads:,}", Value),
+            ("Comments", self._url.comment_text, Value),
+            *((name, value, Value) for name, value in self._url.digests.items()),
+            ("Yanked", "Yes" if self._url.yanked else "No", Value),
+            ("Yanked Reason", self._url.yanked_reason, Value),
+        )
 
 
 ##############################################################################
