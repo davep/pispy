@@ -56,24 +56,8 @@ class Value(Label):
         background: $panel;
         padding-bottom: 1;
         width: 100%;
-
-        &.none {
-            color: $text-muted;
-        }
     }
-
     """
-    """The default styles."""
-
-    def __init__(self, value: RenderableType, *args: Any, **kwargs: Any) -> None:
-        """Initialise the value.
-
-        Args:
-            value: The value.
-        """
-        super().__init__(
-            value or "None", *args, classes=("none" if not value else ""), **kwargs
-        )
 
 
 ##############################################################################
