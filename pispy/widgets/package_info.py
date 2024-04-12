@@ -30,7 +30,7 @@ class Title(Label):
     Title {
         background: $panel-lighten-3;
         text-style: bold;
-        width: 100%;
+        width: 1fr;
     }
     """
     """The defaults styles."""
@@ -52,7 +52,7 @@ class Value(Label):
     Value {
         background: $panel;
         padding-bottom: 1;
-        width: 100%;
+        width: 1fr;
     }
     """
 
