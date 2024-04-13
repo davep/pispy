@@ -58,8 +58,7 @@ class PISpy(App[None]):
     async def on_mount(self) -> None:
         """Pre-fill the display if a package is passed on the command line."""
         if self._package is not None:
-            self.query_one(Input).value = self._package
-            await self.lookup_package()
+            await self.run_action(f"lookup('{self._package}')")
 
     @on(Input.Submitted)
     async def lookup_package(self) -> None:
