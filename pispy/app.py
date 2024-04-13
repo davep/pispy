@@ -1,10 +1,6 @@
 """Provides the main application class."""
 
 ##############################################################################
-# Python imports.
-import sys
-
-##############################################################################
 # Textual imports.
 from textual import on
 from textual.app import App, ComposeResult
@@ -29,6 +25,10 @@ class PISpy(App[None]):
             height: 1;
         }
     }
+
+    Screen:inline {
+        height: 50vh;
+    }
     """
 
     BINDINGS = [("escape", "quit", "Quit")]
@@ -36,6 +36,15 @@ class PISpy(App[None]):
 
     ENABLE_COMMAND_PALETTE = False
     """Disable the command palette."""
+
+    def __init__(self, initial_package: str | None) -> None:
+        """Initialise the application.
+
+        Args:
+            initial_package: The initial package to look up.
+        """
+        super().__init__()
+        self._package = initial_package
 
     def compose(self) -> ComposeResult:
         """Compose the stats screen.
@@ -48,14 +57,8 @@ class PISpy(App[None]):
 
     async def on_mount(self) -> None:
         """Pre-fill the display if a package is passed on the command line."""
-        try:
-            # TODO: doing it via argv is icky, but it's handy for a quick
-            # hack. Once I've revamped the UI I'll switch to argparse, and
-            # probably add an inline switch.
-            self.query_one(Input).value = sys.argv[1]
-        except IndexError:
-            return
-        await self.lookup_package()
+        if self._package is not None:
+            await self.run_action(f"lookup('{self._package}')")
 
     @on(Input.Submitted)
     async def lookup_package(self) -> None:
@@ -71,12 +74,6 @@ class PISpy(App[None]):
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)
         await self.lookup_package()
-
-
-##############################################################################
-def run() -> None:
-    """Run the application."""
-    PISpy().run()
 
 
 ### app.py ends here
