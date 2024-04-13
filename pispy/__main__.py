@@ -50,7 +50,8 @@ def get_args() -> Namespace:
 ##############################################################################
 def run() -> None:
     """Run the application."""
-    PISpy(get_args().package).run(inline=get_args().package is not None)
+    arguments = get_args()
+    PISpy(arguments.package).run(inline=arguments.package is not None)
 
 
 ##############################################################################
