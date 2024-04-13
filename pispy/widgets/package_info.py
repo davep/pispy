@@ -148,13 +148,13 @@ class PackageURLData(Vertical):
     }
     """
 
-    def __init__(self, url: PackageURL, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, url: PackageURL) -> None:
         """Initialise the package URL widget.
 
         Args:
             url: The package URL to display the data for.
         """
-        super().__init__(*args, **kwargs)
+        super().__init__()
         self._url = url
 
     def compose(self) -> ComposeResult:
