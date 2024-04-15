@@ -2,10 +2,10 @@
 
 ##############################################################################
 # Local imports.
-from .package_info import PackageInfo
+from .package_information import PackageInformation
 
 ##############################################################################
 # Export widgets.
-__all__ = ["PackageInfo"]
+__all__ = ["PackageInformation"]
 
 ### __init__.py ends here

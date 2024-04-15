@@ -8,7 +8,7 @@ from textual.widgets import Input
 
 ##############################################################################
 # Local imports.
-from .widgets import PackageInfo
+from .widgets import PackageInformation
 
 
 ##############################################################################
@@ -53,7 +53,7 @@ class PISpy(App[None]):
             The stats screen's layout.
         """
         yield Input(placeholder="Name of the package to look up in PyPI")
-        yield PackageInfo()
+        yield PackageInformation()
 
     async def on_mount(self) -> None:
         """Pre-fill the display if a package is passed on the command line."""
@@ -61,11 +61,11 @@ class PISpy(App[None]):
             await self.run_action(f"lookup('{self._package}')")
 
     @on(Input.Submitted)
-    async def lookup_package(self) -> None:
+    def lookup_package(self) -> None:
         """React to the user hitting enter in the input field."""
-        await self.query_one(PackageInfo).show(self.query_one(Input).value)
+        self.query_one(PackageInformation).show(self.query_one(Input).value)
 
-    async def action_lookup(self, package: str) -> None:
+    def action_lookup(self, package: str) -> None:
         """React to a hyperlink of a project being clicked on.
 
         Args:
@@ -73,7 +73,7 @@ class PISpy(App[None]):
         """
         self.query_one(Input).value = package
         self.query_one(Input).cursor_position = len(package)
-        await self.lookup_package()
+        self.lookup_package()
 
 
 ### app.py ends here
