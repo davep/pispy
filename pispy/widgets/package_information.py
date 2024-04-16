@@ -302,7 +302,7 @@ class PackageInformation(TabbedContent):
     """
 
     BINDINGS = [
-        ("down", "focus_details"),
+        ("up, down", "focus_details"),
     ]
 
     @work(exclusive=True)
