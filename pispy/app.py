@@ -63,7 +63,8 @@ class PISpy(App[None]):
     @on(Input.Submitted)
     def lookup_package(self) -> None:
         """React to the user hitting enter in the input field."""
-        self.query_one(PackageInformation).show(self.query_one(Input).value)
+        if self.query_one(PackageInformation).show(self.query_one(Input).value):
+            self.query_one(PackageInformation).focus()
 
     def action_lookup(self, package: str) -> None:
         """React to a hyperlink of a project being clicked on.
