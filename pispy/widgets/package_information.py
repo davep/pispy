@@ -14,7 +14,7 @@ from pkg_resources import parse_requirements
 # Textual imports.
 from textual import work
 from textual.app import ComposeResult
-from textual.containers import Vertical, VerticalScroll
+from textual.containers import VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Label, Markdown, TabbedContent, TabPane
 
