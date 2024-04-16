@@ -306,7 +306,7 @@ class PackageInformation(TabbedContent):
     """
 
     BINDINGS = [
-        ("up, down", "focus_details"),
+        ("up, down, home, end, pageup, pagedown", "focus_details"),
     ]
 
     @work(exclusive=True)
