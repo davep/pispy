@@ -5,6 +5,9 @@
 **Released: WiP**
 
 - Add support for passing a package name on the command line.
+- Show the package details inline in the terminal if the package name was
+  passed on the command line.
+- Big reworking of the whole UI.
 
 ## 0.5.0
 
