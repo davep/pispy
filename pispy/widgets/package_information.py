@@ -12,11 +12,13 @@ from pkg_resources import parse_requirements
 
 ##############################################################################
 # Textual imports.
-from textual import work
+from textual import on, work
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
+from textual.message import Message
 from textual.widget import Widget
-from textual.widgets import Label, Markdown, TabbedContent, TabPane
+from textual.widgets import Label, Markdown, TabbedContent, TabPane, Tabs
 
 ##############################################################################
 # Local imports.
@@ -141,6 +143,25 @@ def widgets_for(*values: tuple[str, Any, Callable[[Any], Widget]]) -> Iterator[W
 
 
 ##############################################################################
+class TabContent(VerticalScroll):
+    """A wrapper for the content of a package information tab."""
+
+    class GoLeft(Message):
+        """Message to request we move left in the tabs."""
+
+    class GoRight(Message):
+        """Message to request we move right in the tabs."""
+
+    def action_scroll_left(self) -> None:
+        """Handle a request to go left."""
+        self.post_message(self.GoLeft())
+
+    def action_scroll_right(self) -> None:
+        """Handle a request to go right."""
+        self.post_message(self.GoRight())
+
+
+##############################################################################
 class PackageURLDetails(TabPane):
     """Tab pane for showing details of a package URL."""
 
@@ -155,7 +176,7 @@ class PackageURLDetails(TabPane):
         Returns:
             The package URL data layout.
         """
-        with VerticalScroll():
+        with TabContent():
             yield from widgets_for(
                 ("URL", self._url.url, URL),
                 ("Package Type", self._url.packagetype, Value),
@@ -182,7 +203,7 @@ class PackageDescription(TabPane):
         self._package = package
 
     def compose(self) -> ComposeResult:
-        with VerticalScroll():
+        with TabContent():
             yield (
                 Markdown
                 if self._package.description_content_type == "text/markdown"
@@ -233,7 +254,7 @@ class PackageDetails(TabPane):
         Returns:
             The package URL data layout.
         """
-        with VerticalScroll():
+        with TabContent():
             yield from widgets_for(
                 ("Name", self._package.name, Value),
                 ("Version", self._package.version, Value),
@@ -280,6 +301,10 @@ class PackageInformation(TabbedContent):
     }
     """
 
+    BINDINGS = [
+        ("down", "focus_details"),
+    ]
+
     @work(exclusive=True)
     async def show(self, package_name: str) -> None:
         """Show the package information for the given package.
@@ -311,6 +336,24 @@ class PackageInformation(TabbedContent):
 
         # We're all done now.
         self.loading = False
+
+    @on(TabContent.GoLeft)
+    async def tab_leftward(self) -> None:
+        """Handle a request to move leftward."""
+        await self.query_one(Tabs).focus().run_action("previous_tab")
+
+    @on(TabContent.GoRight)
+    async def tab_righttward(self) -> None:
+        """Handle a request to move rightward."""
+        await self.query_one(Tabs).focus().run_action("next_tab")
+
+    def action_focus_details(self) -> None:
+        """Handle a request to ensure the content is focused."""
+        if self.active_pane is not None and self.screen.focused == self.query_one(Tabs):
+            try:
+                self.active_pane.query_one(TabContent).focus()
+            except NoMatches:
+                pass
 
 
 ### package_information.py ends here
