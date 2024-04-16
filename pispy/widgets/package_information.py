@@ -141,49 +141,6 @@ def widgets_for(*values: tuple[str, Any, Callable[[Any], Widget]]) -> Iterator[W
 
 
 ##############################################################################
-class PackageURLData(Vertical):
-    """Widget for displaying data about a package URL."""
-
-    DEFAULT_CSS = """
-    PackageURLData {
-        height: auto;
-        border: solid $accent;
-        background: $panel;
-    }
-    """
-
-    def __init__(self, url: PackageURL) -> None:
-        """Initialise the package URL widget.
-
-        Args:
-            url: The package URL to display the data for.
-        """
-        super().__init__()
-        self._url = url
-
-    def compose(self) -> ComposeResult:
-        """Compose the package URL display.
-
-        Returns:
-            The package URL data layout.
-        """
-        yield from widgets_for(
-            ("URL", self._url.url, URL),
-            ("Package Type", self._url.packagetype, Value),
-            ("Python Version", self._url.python_version, Value),
-            ("Size", f"{self._url.size:,}", Value),
-            ("MD5 Digest", self._url.md5_digest, Value),
-            ("Uploaded", self._url.upload_time_iso_8601, Value),
-            ("Has Signature", "Yes" if self._url.has_sig else "No", Value),
-            ("Downloads", f"{self._url.downloads:,}", Value),
-            ("Comments", self._url.comment_text, Value),
-            *((name, value, Value) for name, value in self._url.digests.items()),
-            ("Yanked", "Yes" if self._url.yanked else "No", Value),
-            ("Yanked Reason", self._url.yanked_reason, Value),
-        )
-
-
-##############################################################################
 class PackageURLDetails(TabPane):
     """Tab pane for showing details of a package URL."""
 
