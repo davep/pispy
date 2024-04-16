@@ -21,6 +21,10 @@ from textual.widget import Widget
 from textual.widgets import Label, Markdown, TabbedContent, TabPane, Tabs
 
 ##############################################################################
+# Backward compatible typing.
+from typing_extensions import Self
+
+##############################################################################
 # Local imports.
 from ..data import Package, PackageURL
 
@@ -359,6 +363,10 @@ class PackageInformation(TabbedContent):
                 self.active_pane.query_one(TabContent).focus()
             except NoMatches:
                 pass
+
+    def focus(self, scroll_visible: bool = True) -> Self:
+        self.query_one(Tabs).focus(scroll_visible)
+        return self
 
 
 ### package_information.py ends here
