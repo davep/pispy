@@ -28,6 +28,10 @@ class PISpy(App[None]):
 
     Screen:inline {
         height: 50vh;
+
+        Input {
+            display: none;
+        }
     }
     """
 
