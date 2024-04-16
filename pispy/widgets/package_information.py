@@ -306,16 +306,19 @@ class PackageInformation(TabbedContent):
     ]
 
     @work(exclusive=True)
-    async def show(self, package_name: str) -> None:
+    async def show(self, package_name: str) -> bool:
         """Show the package information for the given package.
 
         Args:
             package_name: The name of the package to lookup and show
+
+        Returns:
+            `True` if the package was found, `False` if not.
         """
 
         # Don't bother trying to do anything if there isn't actually a name.
         if not package_name.strip():
-            return
+            return False
 
         # Show we're loading.
         self.loading = True
@@ -336,6 +339,8 @@ class PackageInformation(TabbedContent):
 
         # We're all done now.
         self.loading = False
+
+        return found
 
     @on(TabContent.GoLeft)
     async def tab_leftward(self) -> None:
