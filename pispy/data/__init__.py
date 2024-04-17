@@ -1,4 +1,4 @@
-"""Code for getting data from PyPi."""
+"""Code for getting data from PyPI."""
 
 ##############################################################################
 # Local imports.

@@ -1,9 +1,9 @@
-"""Provides a class for getting data for a PyPi package."""
+"""Provides a class for getting data for a PyPI package."""
 
 ##############################################################################
 # Python imports.
-from typing import NamedTuple, Any
 from functools import partial
+from typing import Any, NamedTuple
 
 ##############################################################################
 # httpx imports.
@@ -104,7 +104,7 @@ class PackageURL(NamedTuple):
 
 ##############################################################################
 class Package(NamedTuple):
-    """A Package in PyPi."""
+    """A Package in PyPI."""
 
     author: str
     """The author of the package."""
@@ -186,7 +186,7 @@ class Package(NamedTuple):
 
     @classmethod
     async def from_pypi(cls, package: str) -> tuple[bool, "Package"]:
-        """Get information on the given package from PyPi.
+        """Get information on the given package from PyPI.
 
         Args:
             package: The name of the package to get data for.
@@ -196,7 +196,6 @@ class Package(NamedTuple):
         """
 
         async with httpx.AsyncClient() as client:
-
             # Get the package's data from the API.
             resp = await client.get(
                 f"https://pypi.org/pypi/{package}/json", follow_redirects=True
