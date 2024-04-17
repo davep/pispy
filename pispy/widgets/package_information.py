@@ -169,9 +169,13 @@ class TabContent(VerticalScroll):
 class PackageURLDetails(TabPane):
     """Tab pane for showing details of a package URL."""
 
-    def __init__(self, package_url: PackageURL, position: int) -> None:
-        super().__init__(package_url.filename, id=f"package-url-{position}")
-        # TODO: Quick key.
+    def __init__(self, package_url: PackageURL) -> None:
+        """Initialise the object.
+
+        Args:
+            package_url: The package URL to show.
+        """
+        super().__init__(package_url.filename)
         self._url = package_url
 
     def compose(self) -> ComposeResult:
@@ -336,8 +340,8 @@ class PackageInformation(TabbedContent):
             self.add_pane(PackageDetails(package))
             if package.description.strip():
                 self.add_pane(PackageDescription(package))
-            for position, url in enumerate(package.urls):
-                self.add_pane(PackageURLDetails(url, position))
+            for url in package.urls:
+                self.add_pane(PackageURLDetails(url))
         else:
             self.add_pane(PackageUnknown(package_name))
 
