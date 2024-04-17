@@ -1,8 +1,8 @@
 # PISpy ChangeLog
 
-## Unreleased
+## 0.6.0
 
-**Released: WiP**
+**Released: 2024-04-17**
 
 - Add support for passing a package name on the command line.
 - Show the package details inline in the terminal if the package name was
