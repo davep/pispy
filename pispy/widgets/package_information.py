@@ -4,6 +4,7 @@
 # Python imports.
 from functools import singledispatch
 from typing import Any, Callable, Iterator
+from urllib.parse import urlparse
 from webbrowser import open as visit_url
 
 ##############################################################################
@@ -79,13 +80,27 @@ class URL(Label):
     }
     """
 
+    @staticmethod
+    def looks_urlish(url: str) -> bool:
+        """Test if a given string looks like an actual URL.
+
+        Args:
+            url: The URL to test.
+
+        Returns:
+            `True` if it really looks like a URL, `False` if not.
+        """
+        return bool(urlparse(url).scheme)
+
     def __init__(self, url: str) -> None:
         """Initialise the URL.
 
         Args:
             url: The URL.
         """
-        super().__init__(f"[@click=visit('{url}')]{url}[/]")
+        super().__init__(
+            f"[@click=visit('{url}')]{url}[/]" if self.looks_urlish(url) else url
+        )
 
     def action_visit(self, url: str) -> None:
         """Visit the given URL.
