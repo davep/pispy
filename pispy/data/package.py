@@ -3,6 +3,7 @@
 ##############################################################################
 # Python imports.
 from functools import partial
+from re import split
 from typing import Any, NamedTuple
 
 ##############################################################################
@@ -218,7 +219,7 @@ class Package(NamedTuple):
                 docs_url=info("docs_url"),
                 download_url=info("download_url"),
                 homepage=info("home_page"),
-                keywords=info("keywords").split(),
+                keywords=split("[ ,]+", info("keywords")),
                 license=info("license"),
                 maintainer=info("maintainer"),
                 maintainer_email=info("maintainer_email"),

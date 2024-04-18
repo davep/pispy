@@ -1,5 +1,12 @@
 # PISpy ChangeLog
 
+## WiP
+
+**Released: WiP**
+
+- The keywords display now allows for keywords that are space or comma
+  separated. ([#21](https://github.com/davep/pispy/issues/21))
+
 ## 0.6.0
 
 **Released: 2024-04-17**
