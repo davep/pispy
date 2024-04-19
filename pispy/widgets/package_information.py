@@ -208,7 +208,6 @@ class PackageURLDetails(TabPane):
                 ("MD5 Digest", self._url.md5_digest, Value),
                 ("Uploaded", self._url.upload_time_iso_8601, Value),
                 ("Has Signature", "Yes" if self._url.has_sig else "No", Value),
-                ("Downloads", f"{self._url.downloads:,}", Value),
                 ("Comments", self._url.comment_text, Value),
                 *((name, value, Value) for name, value in self._url.digests.items()),
                 ("Yanked", "Yes" if self._url.yanked else "No", Value),
