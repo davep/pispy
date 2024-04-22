@@ -353,9 +353,13 @@ class PackageInformation(TabbedContent):
         if not package_name.strip():
             return False
 
+        # Mark that there's content now.
+        self.set_class(True, "content")
+
         # Show we're loading.
         self.loading = True
 
+        # Clear any existing content.
         self.clear_panes()
 
         # Download the data for the package.
@@ -372,9 +376,6 @@ class PackageInformation(TabbedContent):
 
         # We're all done now.
         self.loading = False
-
-        # Mark that there's content now.
-        self.set_class(True, "content")
 
         return found
 
