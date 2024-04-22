@@ -10,6 +10,8 @@
   ([#23](https://github.com/davep/pispy/pull/23))
 - Requirements are now de-duplicated and sorted.
   ([#24](https://github.com/davep/pispy/pull/24))
+- Made the UI a bit more minimal.
+  ([#26](https://github.com/davep/pispy/pull/26))
 
 ## 0.6.0
 

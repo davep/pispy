@@ -59,7 +59,6 @@ class Value(Label):
 
     DEFAULT_CSS = """
     Value {
-        background: $panel;
         margin-right: 1;
         padding-bottom: 1;
         width: 1fr;
@@ -73,7 +72,6 @@ class URL(Label):
 
     DEFAULT_CSS = """
     URL {
-        background: $panel;
         margin-right: 1;
         padding-bottom: 1;
         width: 1fr;
@@ -325,7 +323,14 @@ class PackageInformation(TabbedContent):
 
     DEFAULT_CSS = """
     PackageInformation {
+        background: $panel;
         height: 1fr;
+        &> * {
+            visibility: hidden;
+        }
+        &.content > * {
+            visibility: visible;
+        }
     }
     """
 
@@ -348,9 +353,13 @@ class PackageInformation(TabbedContent):
         if not package_name.strip():
             return False
 
+        # Mark that there's content now.
+        self.set_class(True, "content")
+
         # Show we're loading.
         self.loading = True
 
+        # Clear any existing content.
         self.clear_panes()
 
         # Download the data for the package.
