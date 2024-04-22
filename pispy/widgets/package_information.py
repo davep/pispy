@@ -325,6 +325,12 @@ class PackageInformation(TabbedContent):
     PackageInformation {
         background: $panel;
         height: 1fr;
+        &> * {
+            visibility: hidden;
+        }
+        &.content > * {
+            visibility: visible;
+        }
     }
     """
 
@@ -366,6 +372,9 @@ class PackageInformation(TabbedContent):
 
         # We're all done now.
         self.loading = False
+
+        # Mark that there's content now.
+        self.set_class(True, "content")
 
         return found
 
