@@ -6,6 +6,8 @@
 
 - The keywords display now allows for keywords that are space or comma
   separated. ([#21](https://github.com/davep/pispy/issues/21))
+- The download count is now no longer shown (it is always `-1` anyway).
+  ([#23](https://github.com/davep/pispy/pull/23))
 
 ## 0.6.0
 
