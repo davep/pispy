@@ -16,16 +16,6 @@ class PISpy(App[None]):
     """The main application class."""
 
     CSS = """
-    Header {
-        HeaderIcon {
-            visibility: hidden;
-        }
-
-        &.-tall {
-            height: 1;
-        }
-    }
-
     Input {
         border: none;
         border-bottom: solid $foreground 20%;
