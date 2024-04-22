@@ -8,6 +8,8 @@
   separated. ([#21](https://github.com/davep/pispy/issues/21))
 - The download count is now no longer shown (it is always `-1` anyway).
   ([#23](https://github.com/davep/pispy/pull/23))
+- Requirements are now de-duplicated and sorted.
+  ([#24](https://github.com/davep/pispy/pull/24))
 
 ## 0.6.0
 
