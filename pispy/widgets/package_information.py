@@ -303,8 +303,14 @@ class PackageDetails(TabPane):
                 (
                     "Requires",
                     ", ".join(
-                        f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
-                        for pkg in parse_requirements(self._package.requires_dist)
+                        sorted(
+                            set(
+                                f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
+                                for pkg in parse_requirements(
+                                    self._package.requires_dist
+                                )
+                            )
+                        )
                     ),
                     Value,
                 ),
