@@ -59,7 +59,6 @@ class Value(Label):
 
     DEFAULT_CSS = """
     Value {
-        background: $panel;
         margin-right: 1;
         padding-bottom: 1;
         width: 1fr;
@@ -73,7 +72,6 @@ class URL(Label):
 
     DEFAULT_CSS = """
     URL {
-        background: $panel;
         margin-right: 1;
         padding-bottom: 1;
         width: 1fr;
@@ -325,6 +323,7 @@ class PackageInformation(TabbedContent):
 
     DEFAULT_CSS = """
     PackageInformation {
+        background: $panel;
         height: 1fr;
     }
     """
