@@ -26,6 +26,17 @@ class PISpy(App[None]):
         }
     }
 
+    Input {
+        border: none;
+        border-bottom: solid $foreground 20%;
+        background: $panel;
+        height: 2;
+        &:focus {
+            border: none;
+            border-bottom: solid $foreground 30%;
+        }
+    }
+
     Screen:inline {
         height: 50vh;
 
