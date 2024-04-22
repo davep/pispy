@@ -8,8 +8,8 @@ from urllib.parse import urlparse
 from webbrowser import open as visit_url
 
 ##############################################################################
-# Package resources imports.
-from pkg_resources import parse_requirements
+# Packing imports.
+from packaging.requirements import Requirement
 
 ##############################################################################
 # Textual imports.
@@ -303,9 +303,10 @@ class PackageDetails(TabPane):
                     ", ".join(
                         sorted(
                             set(
-                                f"[@click=screen.lookup('{pkg.project_name}')]{pkg.project_name}[/]"
-                                for pkg in parse_requirements(
-                                    self._package.requires_dist
+                                f"[@click=screen.lookup('{pkg.name}')]{pkg.name}[/]"
+                                for pkg in (
+                                    Requirement(requirement)
+                                    for requirement in self._package.requires_dist
                                 )
                             )
                         )

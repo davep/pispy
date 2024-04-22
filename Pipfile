@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 textual = "*"
 httpx = "*"
+packaging = "*"
 
 [dev-packages]
 mypy = "*"
