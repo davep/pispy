@@ -12,6 +12,9 @@
   ([#24](https://github.com/davep/pispy/pull/24))
 - Made the UI a bit more minimal.
   ([#26](https://github.com/davep/pispy/pull/26))
+- Switched to using
+  [`Packaging`](https://packaging.pypa.io/en/stable/index.html) to parse
+  dependency package details.
 
 ## 0.6.0
 
