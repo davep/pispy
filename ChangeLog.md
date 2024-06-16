@@ -1,8 +1,8 @@
 # PISpy ChangeLog
 
-## Unreleased
+## 0.8.0
 
-**Released: WiP**
+**Released: 2024-06-16**
 
 - Updated Textual and fixed breakage.
 - Added link-following support to the package description pane, when the
