@@ -5,6 +5,8 @@
 **Released: WiP**
 
 - Updated Textual and fixed breakage.
+- Added link-following support to the package description pane, when the
+  description is seen as Markdown and the link can be reasonably followed.
 
 ## 0.7.0
 

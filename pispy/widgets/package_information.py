@@ -230,6 +230,16 @@ class PackageDescription(TabPane):
                 else Value
             )(self._package.description, id="description")
 
+    @on(Markdown.LinkClicked)
+    def maybe_handle_url(self, event: Markdown.LinkClicked) -> None:
+        """Maybe handle a link coming from the `Markdown` widget.
+
+        Args:
+            event: The link click event.
+        """
+        if URL.looks_urlish(event.href):
+            visit_url(event.href)
+
 
 ##############################################################################
 class PackageUnknown(TabPane):
