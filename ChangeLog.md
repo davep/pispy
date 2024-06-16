@@ -1,5 +1,11 @@
 # PISpy ChangeLog
 
+## Unreleased
+
+**Released: WiP**
+
+- Updated Textual and fixed breakage.
+
 ## 0.7.0
 
 **Released: 2024-04-22**

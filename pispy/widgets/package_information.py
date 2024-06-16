@@ -303,7 +303,7 @@ class PackageDetails(TabPane):
                     ", ".join(
                         sorted(
                             set(
-                                f"[@click=screen.lookup('{pkg.name}')]{pkg.name}[/]"
+                                f"[@click=app.lookup('{pkg.name}')]{pkg.name}[/]"
                                 for pkg in (
                                     Requirement(requirement)
                                     for requirement in self._package.requires_dist
