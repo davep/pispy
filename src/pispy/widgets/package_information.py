@@ -334,6 +334,10 @@ class PackageInformation(TabbedContent):
 
     DEFAULT_CSS = """
     PackageInformation {
+        Tab {
+            padding: 0;
+            margin: 0 1;
+        }
         background: $panel;
         height: 1fr;
         &> * {

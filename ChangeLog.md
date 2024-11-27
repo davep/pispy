@@ -1,5 +1,12 @@
 # PISpy ChangeLog
 
+## 0.9.0
+
+**Released: 2024-11-27**
+
+- Updated for newer versions of Textual.
+- Internal tweaks.
+
 ## 0.8.0
 
 **Released: 2024-06-16**

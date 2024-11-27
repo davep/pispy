@@ -1,5 +1,58 @@
-[build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
+[project]
+name = "pispy-client"
+version = "0.9.0"
+description = "A terminal-based Python package index inspector"
+authors = [
+    { name = "Dave Pearson", email = "davep@davep.org" }
+]
+dependencies = [
+    "httpx",
+    "packaging",
+    "textual>=0.68.0",
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)" }
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Environment :: Console",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet",
+    "Topic :: Terminals",
+    "Typing :: Typed",
+]
 
-### pyproject.toml ends here
+[project.urls]
+Homepage = "https://github.com/davep/pispy"
+Repository = "https://github.com/davep/pispy"
+Documentation = "https://github.com/davep/pispy/blob/main/README.md"
+Source = "https://github.com/davep/pispy"
+Issues = "https://github.com/davep/pispy/issues"
+Discussions = "https://github.com/davep/pispy/discussions"
+
+[project.scripts]
+pispy = "pispy.__main__:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pre-commit>=4.0.1",
+    "mypy>=1.13.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pispy"]
