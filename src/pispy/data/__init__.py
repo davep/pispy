@@ -5,7 +5,7 @@
 from .package import Package, PackageURL
 
 ##############################################################################
-# Exprots.
+# Exports.
 __all__ = ["Package", "PackageURL"]
 
 ### __init__.py ends here
