@@ -1,10 +1,10 @@
 # PISpy ChangeLog
 
-## Unreleased
+## v1.0.0
 
-**Released: 2024-11-27**
+**Released: 2025-04-12**
 
-- Small cosmetic tweaks.
+- Small cosmetic tweaks. ([#35](https://github.com/davep/pispy/pull/35))
 
 ## 0.9.0
 
