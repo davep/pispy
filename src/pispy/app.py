@@ -34,6 +34,11 @@ class PISpy(App[None]):
             display: none;
         }
     }
+
+    * {
+        /* Let's make scrollbars a wee bit thinner. */
+        scrollbar-size-vertical: 1;
+    }
     """
 
     BINDINGS = [("escape", "quit", "Quit")]
