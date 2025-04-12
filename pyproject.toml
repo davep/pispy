@@ -41,7 +41,9 @@ Discussions = "https://github.com/davep/pispy/discussions"
 pispy = "pispy.__main__:run"
 
 [build-system]
-requires = ["hatchling"]
+# https://github.com/astral-sh/rye/issues/1446
+requires = ["hatchling==1.26.3", "hatch-vcs"]
+# requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.rye]
