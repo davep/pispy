@@ -1,5 +1,11 @@
 # PISpy ChangeLog
 
+## Unreleased
+
+**Released: 2024-11-27**
+
+- Small cosmetic tweaks.
+
 ## 0.9.0
 
 **Released: 2024-11-27**

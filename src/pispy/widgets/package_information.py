@@ -346,6 +346,9 @@ class PackageInformation(TabbedContent):
         &.content > * {
             visibility: visible;
         }
+        Markdown {
+            background: transparent;
+        }
     }
     """
 

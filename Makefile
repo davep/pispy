@@ -20,6 +20,10 @@ setup:				# Set up the repository for development
 	rye sync
 	$(run) pre-commit install
 
+.PHONY: update
+update:				# Update all dependencies
+	rye sync --update-all
+
 .PHONY: resetup
 resetup:			# Recreate the virtual environment from scratch
 	rm -rf .venv
