@@ -44,7 +44,7 @@ rich==14.0.0
     # via textual
 sniffio==1.3.1
     # via anyio
-textual==3.0.1
+textual==3.1.0
     # via pispy-client
 typing-extensions==4.13.2
     # via anyio
